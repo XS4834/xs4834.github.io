@@ -1,0 +1,354 @@
+import cloud from '@lafjs/cloud'
+
+export default async function (ctx) {
+  const db = cloud.database()
+  const { brand, industry, scope, action, message, reportContent } = ctx.body
+
+  // --- 1. 处理网页显示 (GET) ---
+  if (ctx.method === 'GET') {
+    ctx.response.type('text/html')
+    return `
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>玄五文化 - GEO 矩阵决策审计系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        :root { --xw-red: #af2822; --xw-gold: #fff9c4; --xw-gray: #f3f4f6; }
+        body { background-color: #f7f8fa; font-family: "PingFang SC", sans-serif; color: #333; }
+        .bg-xw { background-color: var(--xw-red); }
+        .text-xw { color: var(--xw-red); }
+        
+        /* 按钮交互 */
+        .btn-audit { 
+            background: white; color: var(--xw-red); border: 2px solid var(--xw-red);
+            transition: all 0.2s ease; cursor: pointer; font-weight: 900;
+        }
+        .btn-audit:active { background: var(--xw-red); color: white; transform: scale(0.96); }
+
+        /* 维度选择器 */
+        .scope-btn { flex: 1; padding: 12px; font-size: 13px; background: white; border: 1px solid #ddd; text-align: center; transition: 0.3s; color: #666; }
+        .scope-btn.active { background: #333; color: white; border-color: #333; font-weight: bold; }
+        .scope-btn:first-child { border-radius: 12px 0 0 12px; }
+        .scope-btn:last-child { border-radius: 0 12px 12px 0; }
+
+        /* 进度条样式（中心扩散） */
+        .bar-container { height: 8px; background: #eee; border-radius: 4px; position: relative; overflow: hidden; display: flex; justify-content: center; }
+        .bar-fill { 
+            height: 100%; width: 0; 
+            background: linear-gradient(90deg, transparent 0%, var(--xw-red) 50%, transparent 100%); 
+            transition: width 1.5s cubic-bezier(0.1, 0, 0.2, 1); 
+        }
+
+        /* 加载动画：浅灰背景 + 圆圈 + 中间字 */
+        #loader { background-color: rgba(243, 244, 246, 0.98); }
+        .spinner-ring { width: 120px; height: 120px; border: 3px solid #ddd; border-top: 3px solid var(--xw-red); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .xw-inner-text { position: absolute; font-size: 14px; font-weight: 900; color: var(--xw-red); letter-spacing: 2px; }
+
+        /* 报告样式 */
+        .card { background: white; border-radius: 28px; box-shadow: 0 12px 40px rgba(0,0,0,0.06); overflow: hidden; }
+        mark { background-color: var(--xw-gold); color: #856404; padding: 0 4px; border-radius: 4px; font-weight: bold; }
+        .module-item { background: #fff; border: 1px solid #f0f2f5; border-radius: 18px; padding: 22px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.01); }
+        .module-header { font-size: 14px; font-weight: 900; color: var(--xw-red); margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+        .score-huge { font-size: 96px; font-weight: 900; line-height: 1; letter-spacing: -4px; color: white; }
+        
+        /* 行业热词 */
+        .hotword-tag { display: inline-block; padding: 5px 12px; background: #f0f0f0; border-radius: 20px; font-size: 11px; margin: 4px; color: #666; font-weight: bold; }
+        .hotword-tag.highlight { background: #fdf2f2; color: var(--xw-red); border: 1px solid #af2822; }
+
+        /* AI 助手 */
+        #ai-btn { position: fixed; bottom: 30px; right: 20px; z-index: 1000; cursor: pointer; }
+        .chat-win { position: fixed; bottom: 100px; right: 20px; width: 320px; height: 450px; background: white; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.2); display: none; flex-direction: column; overflow: hidden; z-index: 1001; border: 1px solid #eee; }
+    </style>
+</head>
+<body class="p-4 antialiased">
+    
+    <!-- 查询页 -->
+    <div id="search-view" class="max-w-md mx-auto animate__animated animate__fadeIn">
+        <header class="text-center py-12">
+            <h1 class="text-4xl font-black text-xw mb-1 tracking-tighter">玄五文化</h1>
+            <p class="text-[10px] tracking-[0.4em] text-gray-400 font-bold uppercase">GEO Matrix Audit System</p>
+        </header>
+
+        <div class="card p-8 border-t-8 border-red-800">
+            <div class="mb-6">
+                <label class="block text-xs font-black text-gray-500 uppercase mb-3">审计主体全称 / Entity Name</label>
+                <input type="text" id="brandInput" class="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:ring-1 focus:ring-red-800 text-sm" placeholder="广州玄五文化科技有限公司">
+            </div>
+
+            <div class="mb-8">
+                <label class="block text-xs font-black text-gray-500 uppercase mb-3">所属行业属性 / Industry</label>
+                <input type="text" id="industryInput" class="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:ring-1 focus:ring-red-800 text-sm" placeholder="数字营销、汽车音响改装、AIGC内容制作">
+            </div>
+
+            <div class="mb-10">
+                <label class="block text-xs font-black text-gray-500 uppercase mb-3">审计空间维度 / Scope</label>
+                <div class="flex" id="scopeGroup">
+                    <div class="scope-btn" onclick="setScope('本地', this)">本地 (Local)</div>
+                    <div class="scope-btn" onclick="setScope('省域', this)">省域 (Regional)</div>
+                    <div class="scope-btn active" onclick="setScope('全国', this)">全国 (National)</div>
+                </div>
+            </div>
+
+            <button onclick="runAudit(this)" class="btn-audit w-full py-5 rounded-2xl font-black text-lg">启动 GEO 深度决策审计</button>
+        </div>
+    </div>
+
+    <!-- 结果页 -->
+    <div id="report-view" class="hidden max-w-md mx-auto animate__animated animate__fadeInUp pb-24 relative z-10">
+        <div class="flex justify-between items-center mb-6">
+            <button onclick="location.reload()" class="text-[10px] font-bold text-gray-500 px-4 py-2 border bg-white rounded-lg">← 返回重试</button>
+            <button onclick="alert('PPT已生成并存入云端后台，请联系熊猫panda获取导出链接。')" class="text-[10px] font-black text-white px-5 py-2 bg-gray-900 rounded-full italic">EXPORT PPT</button>
+        </div>
+        
+        <div class="card mb-8 border-t-8 border-red-800">
+            <div class="bg-xw p-12 text-white text-center">
+                <div class="score-huge italic mb-4" id="score-val">--</div>
+                <div id="score-label" class="px-6 py-2 rounded-full text-[12px] font-black uppercase inline-block border-2 border-white/30 text-white">状态：评估中</div>
+                <h2 id="brand-title" class="text-xl font-bold mt-10 border-t border-white/10 pt-8">-</h2>
+            </div>
+
+            <!-- 行业热词匹配 -->
+            <div class="p-8 bg-white border-b">
+                <h3 class="text-[10px] font-black text-gray-400 mb-6 uppercase tracking-widest border-l-4 border-red-800 pl-3 italic">行业核心热词匹配度 / Keywords</h3>
+                <div id="hotwords-box" class="flex flex-wrap"></div>
+            </div>
+
+            <!-- 权重分布 -->
+            <div class="p-8 bg-white border-b">
+                <h3 class="text-[10px] font-black text-gray-400 mb-6 uppercase tracking-widest border-l-4 border-red-800 pl-3 italic">多维穿透权重评估 / Visibility Reach</h3>
+                <div id="bars" class="space-y-8"></div>
+            </div>
+
+            <div id="ai-container" class="p-8 bg-gray-50/20"></div>
+        </div>
+
+        <!-- 熊猫红色名片 -->
+        <div class="p-10 bg-[#af2822] rounded-[40px] text-white shadow-2xl relative overflow-hidden">
+            <div class="flex items-center mb-8">
+                <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center font-black mr-4 shadow-lg text-2xl text-xw">玄</div>
+                <div>
+                    <div class="text-xl font-bold italic">熊猫 panda</div>
+                    <div class="text-[10px] opacity-70 font-bold uppercase tracking-widest">Digital GC Service Expert</div>
+                </div>
+            </div>
+            <div class="space-y-4 text-xs font-medium">
+                <div class="flex justify-between border-b border-white/20 pb-2"><span>联系电话</span><span class="font-bold">13926056601</span></div>
+                <div class="flex justify-between border-b border-white/20 pb-2"><span>微信咨询</span><span class="font-bold">funnypanda88</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI 助手按钮 -->
+    <div id="ai-btn" class="hidden animate__animated animate__bounceIn">
+        <div class="chat-win flex flex-col" id="chat-window">
+            <div class="bg-xw p-4 text-white font-bold text-sm flex justify-between items-center">
+                <span>玄五 AI 审计解说员</span>
+                <span onclick="toggleChat()" class="cursor-pointer text-xl">×</span>
+            </div>
+            <div id="chat-content" class="flex-1 p-4 overflow-y-auto text-xs space-y-4 bg-gray-50">
+                <div class="bg-white p-3 rounded-xl shadow-sm text-gray-600 leading-relaxed italic">您好！我是玄五AI，本报告显示您的品牌在相关赛道的GEO权重存在明显短板，我可以为您提供修复建议。</div>
+            </div>
+            <div class="p-3 bg-white border-t flex items-center">
+                <input type="text" id="chat-input" class="flex-1 text-xs outline-none p-2 bg-gray-50 rounded-lg" placeholder="针对报告内容进行提问...">
+                <button onclick="askAssistant()" class="ml-2 text-xw font-bold text-xs px-2">发送</button>
+            </div>
+        </div>
+        <div onclick="toggleChat()" class="w-14 h-14 bg-xw rounded-full flex items-center justify-center text-white shadow-2xl">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+        </div>
+    </div>
+
+    <!-- 加载层：浅灰背景 + 圆圈转动 + 中间字 -->
+    <div id="loader" class="hidden fixed inset-0 z-[2000] flex flex-col items-center justify-center text-center">
+        <div class="relative flex items-center justify-center">
+            <div class="spinner-ring"></div>
+            <div class="xw-inner-text">玄五文化</div>
+        </div>
+        <p class="text-[10px] text-gray-400 mt-10 font-bold uppercase tracking-widest animate-pulse">AI 多维对标审计执行中...</p>
+    </div>
+
+    <script>
+        let selectedScope = "全国";
+        let reportDataForAssistant = "";
+
+        function setScope(val, el) {
+            selectedScope = val;
+            document.querySelectorAll('.scope-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        async function runAudit(btn) {
+            const brand = document.getElementById('brandInput').value;
+            const industry = document.getElementById('industryInput').value;
+            if(!brand || !industry) return alert("❌ 请输入完整审计主体参数");
+            
+            btn.style.backgroundColor = '#af2822';
+            btn.style.color = 'white';
+            
+            setTimeout(() => document.getElementById('loader').classList.remove('hidden'), 200);
+
+            try {
+                const response = await fetch(window.location.href, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ brand, industry, scope: selectedScope, action: 'audit' })
+                });
+                const data = await response.json();
+                renderReport(data);
+            } catch (e) {
+                alert("审计超时，建议刷新页面重试。");
+                location.reload();
+            }
+        }
+
+        function renderReport(data) {
+            document.getElementById('loader').classList.add('hidden');
+            document.getElementById('search-view').classList.add('hidden');
+            document.getElementById('report-view').classList.remove('hidden');
+            document.getElementById('ai-btn').classList.remove('hidden');
+            document.getElementById('brand-title').innerText = data.brand;
+
+            // 行业热词模拟
+            const words = ["AIGC制作", "品牌出海", "场景化营销", "搜索权重", "语义穿透", "精准改装", "服务密度", "截流预警"];
+            document.getElementById('hotwords-box').innerHTML = words.map(w => {
+                const active = Math.random() > 0.5 ? 'highlight' : '';
+                return '<span class="hotword-tag ' + active + '">' + w + '</span>';
+            }).join('');
+
+            let total = 0, count = 0;
+            reportDataForAssistant = "";
+
+            const html = data.results.map(m => {
+                const match = m.content.match(/\\[SCORE:\\s*(\\d+)\\]/i);
+                const score = match ? parseInt(match[1]) : 35;
+                total += score; count++;
+                reportDataForAssistant += m.content + "\\n";
+
+                let content = m.content.replace(/\\[SCORE:.*\\]/gi, '').trim();
+                content = content.replace(/==(.*?)==/g, '<mark>$1</mark>');
+                
+                const sections = content.split(/【/);
+                return sections.filter(s => s.trim()).map(s => {
+                    const p = s.split('】');
+                    return '<div class="module-item animate__animated animate__fadeIn"><div class="module-header italic">【' + (p[0]||'审计') + '】</div><div class="module-body">' + (p[1]||'') + '</div></div>';
+                }).join('');
+            }).join('');
+
+            const finalScore = Math.floor(total / count);
+            document.getElementById('score-val').innerText = finalScore;
+            
+            const label = document.getElementById('score-label');
+            if(finalScore >= 90) { label.innerText = "状态：行业显眼包"; label.style.backgroundColor = "#16a34a"; }
+            else if(finalScore >= 75) { label.innerText = "状态：崭露头角"; label.style.backgroundColor = "#2563eb"; }
+            else { label.innerText = "状态：默默无闻"; label.style.backgroundColor = "#ea580c"; }
+            
+            document.getElementById('ai-container').innerHTML = html;
+
+            const bars = [
+                { l: "国家级穿透率 (National)", v: Math.max(5, finalScore - 25) },
+                { l: "省级影响力 (Regional)", v: Math.max(10, finalScore - 12) },
+                { l: "本地认知度 (Local)", v: Math.min(100, finalScore + 8) }
+            ];
+            document.getElementById('bars').innerHTML = bars.map((b, i) => '<div><div class="flex justify-between text-[11px] font-black text-gray-400 mb-2 uppercase tracking-tighter"><span>'+b.l+'</span><span>'+b.v+'%</span></div><div class="bar-container"><div id="p'+i+'" class="bar-fill"></div></div></div>').join('');
+            setTimeout(() => bars.forEach((b, i) => document.getElementById('p'+i).style.width = b.v + "%"), 300);
+        }
+
+        function toggleChat() {
+            const win = document.getElementById('chat-window');
+            win.style.display = (win.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        async function askAssistant() {
+            const input = document.getElementById('chat-input');
+            const msg = input.value;
+            if(!msg) return;
+            const box = document.getElementById('chat-content');
+            box.innerHTML += '<div class="text-right"><span class="bg-gray-200 p-2 rounded-xl inline-block">' + msg + '</span></div>';
+            input.value = "";
+            box.scrollTop = box.scrollHeight;
+
+            try {
+                const response = await fetch(window.location.href, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'assistant', message: msg, reportContent: reportDataForAssistant })
+                });
+                const data = await response.json();
+                box.innerHTML += '<div class="text-left"><span class="bg-white p-3 rounded-xl shadow-sm text-gray-700">' + data.answer + '</span></div>';
+                box.scrollTop = box.scrollHeight;
+            } catch (e) {
+                box.innerHTML += '<div class="text-left text-red-400 text-[10px]">助理响应超时，请重试。</div>';
+            }
+        }
+    </script>
+</body>
+</html>
+    `
+  }
+
+  // --- 2. 处理 AI 审计与助手逻辑 (POST) ---
+  if (ctx.method === 'POST') {
+    const keys = {
+      deepseek: "sk-4a3a2005ce4842fb8c6d24cd87e2179b",
+      qwen: "sk-55eb924e4b024b7abf0ac1b792121214",
+      doubao: "7a663a6d-e608-44d6-aa75-488093e9e1d8",
+      ernie: "bce-v3/ALTAK-D7uvL83mQLLsj3gVcyLSZ/fdbd69ea7c257d680612c2a372b3f1ed7c478ea5"
+    }
+
+    if (action === 'assistant') {
+      const res = await fetch('https://api.deepseek.com/chat/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${keys.deepseek}` },
+        body: JSON.stringify({
+          model: "deepseek-chat",
+          messages: [
+            { role: "system", content: "你现在是玄五文化审计助理。请基于报告内容给客户深度解答。多用Emoji，严禁*号。建议多从数字营销策略层面回复。" },
+            { role: "user", content: `报告原文内容：${reportContent}\n客户提问：${message}` }
+          ]
+        })
+      })
+      const data = await res.json()
+      return { answer: data.choices[0].message.content }
+    }
+
+    if (brand) {
+      await db.collection('audit_logs').add({ brand, industry, scope, time: new Date().toLocaleString() })
+
+      const sysPrompt = `你现在是玄五文化GEO专家。
+      审计准则：
+      1. 巨头(腾讯/瑞幸/联想/网易)必须给92-98分。地方名企80+。无记录者必给40以下。
+      2. 身份识别：如果是服务商/改装店，重点评估其在${scope}区域内的品牌溢出和获客权重。必须提及2-3个真实同行公司名进行对标。
+      3. 文案要求：严禁 * 和 # 符号。每段必须插入 4-6 个 Emoji。重点词用 ==包裹==。
+      4. 结构：必须按标题分段：【现状评估】【地域权重】【截流风险(对标分析)】【决策建议】。
+      注意：最后一行写 [SCORE: 数字]。`
+
+      const callAI = async (url, key, model, isErnie = false) => {
+        try {
+          const body = {
+            model,
+            messages: [{ role: "system", content: sysPrompt }, { role: "user", content: `审计对象：${brand}, 行业：${industry}, 精度维度：${scope}` }],
+            temperature: 0.3
+          }
+          if (isErnie) body.extra_body = { "web_search": { "enable": true } }
+          const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` }, body: JSON.stringify(body) })
+          const data = await res.json()
+          return data.choices?.[0]?.message?.content || "数据暂缺。"
+        } catch (e) { return "节点繁忙。" }
+      }
+
+      const results = await Promise.all([
+        callAI('https://api.deepseek.com/chat/completions', keys.deepseek, 'deepseek-chat'),
+        callAI('https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions', keys.qwen, 'qwen-plus'),
+        callAI('https://ark.cn-beijing.volces.com/api/v3/chat/completions', keys.doubao, 'doubao-seed-1-8-251228'),
+        callAI('https://qianfan.baidubce.com/v2/chat/completions', keys.ernie, 'ernie-4.5-turbo-128k', true)
+      ])
+
+      return { brand, results: [ { name: "DeepSeek", content: results[0] }, { name: "通义千问", content: results[1] }, { name: "豆包(字节)", content: results[2] }, { name: "文心一言", content: results[3] } ] }
+    }
+  }
+}
