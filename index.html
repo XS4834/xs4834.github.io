@@ -29,7 +29,7 @@
             color: var(--text-main);
             background-color: var(--bg-body);
             line-height: 1.6;
-            overflow-x: hidden; /* 防止横向滚动条 */
+            overflow-x: hidden;
         }
         a { text-decoration: none; color: inherit; }
 
@@ -115,11 +115,13 @@
         }
         .slide.active { opacity: 1; pointer-events: auto; }
         
+        /* 修复：加深遮罩层，灰度更高 */
         .slide::before {
             content: '';
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 100%);
+            /* 不透明度加深到 0.6 */
+            background: linear-gradient(135deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 100%);
             z-index: 1;
         }
 
@@ -129,7 +131,6 @@
             color: white;
             max-width: 1100px;
             padding: 0 20px;
-            /* 电脑端默认样式 */
         }
         .hero-title {
             font-size: 56px;
@@ -276,78 +277,81 @@
         .footer-info p { font-size: 18px; font-weight: bold; }
         .copyright { text-align: center; padding-top: 30px; color: #555; font-size: 14px; }
 
-        .back-to-top {
-            position: fixed; bottom: 30px; right: 30px;
-            background: var(--brand-red); color: white;
+        /* 悬浮按钮组 */
+        .float-btns {
+            position: fixed; bottom: 30px; right: 30px; z-index: 999;
+            display: flex; flex-direction: column; gap: 15px;
+        }
+        .float-btn {
             width: 50px; height: 50px; border-radius: 50%;
+            background: var(--brand-red); color: white;
             display: flex; align-items: center; justify-content: center;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            z-index: 999; opacity: 0; pointer-events: none; transition: 0.3s;
+            cursor: pointer; transition: 0.3s; opacity: 0.9;
         }
-        .back-to-top.show { opacity: 1; pointer-events: auto; }
-        .back-to-top:hover { transform: translateY(-3px); }
+        .float-btn:hover { transform: scale(1.1); opacity: 1; }
+        .back-to-top { display: none; } /* 默认隐藏 */
+        .back-to-top.show { display: flex; }
 
-        /* ================= 🚨 移动端专属修复补丁 (关键部分) ================= */
+        /* 微信弹窗 */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); z-index: 2000;
+            display: none; align-items: center; justify-content: center;
+        }
+        .modal-content {
+            background: white; padding: 30px; border-radius: 15px; text-align: center;
+            max-width: 90%; position: relative; animation: popIn 0.3s ease;
+        }
+        .modal-content img { width: 200px; height: 200px; margin-bottom: 15px; }
+        .modal-close {
+            position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer; color: #999;
+        }
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* ================= 🚨 移动端专属修复补丁 (已优化) ================= */
         @media (max-width: 768px) {
             
-            /* 1. 布局修复：左右边距缩小，利用屏幕空间 */
             .container { padding: 0 20px; }
             .navbar { padding: 0 20px; }
-            
-            /* 2. 导航栏简化：手机端隐藏文字链接，保留Logo */
             .nav-links { display: none; } 
 
-            /* 3. Hero文字修复 (解决第一页、第六页大字溢出) */
+            /* 修复：字体缩小 */
             .hero-title {
-                font-size: 32px !important; /* 强制缩小字号 */
-                line-height: 1.3;
-                margin-bottom: 15px;
+                font-size: 24px !important; /* 从32改到24，更精致 */
+                line-height: 1.4;
+                margin-bottom: 10px;
             }
             .hero-subtitle {
-                font-size: 16px !important; /* 缩小副标题 */
-                padding: 8px 15px;
-                white-space: normal; /* 允许换行 */
-                line-height: 1.5;
+                font-size: 14px !important; /* 从16改到14 */
+                padding: 5px 12px;
+                white-space: normal;
             }
             .btn-hero {
-                padding: 12px 30px;
-                font-size: 16px;
+                padding: 10px 25px;
+                font-size: 14px;
             }
 
-            /* 4. 数据轰炸栏：改为双列或单列 */
             .stats-grid { flex-wrap: wrap; }
             .stat-item { 
-                flex: 0 0 50%; /* 两个一行 */
+                flex: 0 0 50%; 
                 border-bottom: 1px solid rgba(255,255,255,0.2); 
                 border-right: none; 
                 padding: 20px 0; 
             }
-            /* 最后一个占满 */
             .stat-item:last-child { flex: 0 0 100%; border-bottom: none; }
-            .stat-number { font-size: 40px; }
+            .stat-number { font-size: 36px; }
 
-            /* 5. 卡片布局：强制一列 */
             .services-row, .cases-row { flex-wrap: wrap; }
-            .service-card, .case-item { flex: 0 0 100%; }
+            .service-card, .case-item { flex: 0 0 100%; margin-bottom: 20px; }
 
-            /* 6. 页脚修复 (解决溢出问题) */
-            .footer-grid { 
-                grid-template-columns: 1fr; /* 变单列 */
-                gap: 40px; 
-            }
-            .footer-brand p {
-                font-size: 14px;
-                line-height: 1.6;
-                word-wrap: break-word; /* 关键：强制长文字换行 */
-            }
-            .footer-info {
-                grid-template-columns: 1fr; /* 信息也单列 */
-                gap: 25px;
-            }
-            .footer-info p {
-                font-size: 16px;
-                word-break: break-all; /* 关键：强制邮箱/地址换行，防止撑破屏幕 */
-            }
+            .footer-grid { grid-template-columns: 1fr; gap: 40px; }
+            .footer-brand p { font-size: 14px; word-wrap: break-word; }
+            .footer-info { grid-template-columns: 1fr; gap: 20px; }
+            .footer-info p { font-size: 15px; word-break: break-all; }
         }
     </style>
 </head>
@@ -356,9 +360,7 @@
     <!-- 导航栏 -->
     <nav class="navbar">
         <div class="logo-container">
-            <!-- Logo图片 -->
             <img src="./images/logo.png" alt="玄五文化" class="logo-img">
-            <!-- Logo文字 -->
             <div class="logo-text">玄五文化</div>
         </div>
 
@@ -373,7 +375,7 @@
 
     <!-- 全屏轮播 Hero 区域 -->
     <div class="hero-slider">
-        <!-- 幻灯片 1：总愿景 -->
+        <!-- 幻灯片 1：总愿景 (banner1.jpg) -->
         <div class="slide active" style="background-image: url('./images/banner1.jpg');">
             <div class="hero-content">
                 <h1 class="hero-title">为客户创造卓越的<br><span class="hero-highlight">品牌价值</span> 与 <span class="hero-highlight">商业效益</span></h1>
@@ -382,7 +384,7 @@
             </div>
         </div>
         
-        <!-- 幻灯片 2：品牌策划 -->
+        <!-- 幻灯片 2：品牌策划 (banner2.jpg) -->
         <div class="slide" style="background-image: url('./images/banner2.jpg');">
             <div class="hero-content">
                 <h1 class="hero-title">品牌文化策划<br><span class="hero-highlight">Brand Planning</span></h1>
@@ -400,7 +402,7 @@
             </div>
         </div>
 
-        <!-- 幻灯片 4：活动营销 -->
+        <!-- 幻灯片 4：活动营销 (banner4.jpg) -->
         <div class="slide" style="background-image: url('./images/banner4.jpg');">
             <div class="hero-content">
                 <h1 class="hero-title">活动文化营销<br><span class="hero-highlight">Event Marketing</span></h1>
@@ -409,7 +411,7 @@
             </div>
         </div>
 
-        <!-- 幻灯片 5：数字技术 (3D线框脸) -->
+        <!-- 幻灯片 5：数字技术 (修复：蓝色线框脸) -->
         <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2670&auto=format&fit=crop');">
             <div class="hero-content">
                 <h1 class="hero-title">数字文化技术<br><span class="hero-highlight">Digital Tech & AIGC</span></h1>
@@ -540,8 +542,8 @@
                 </div>
                 <div class="case-item">
                     <div class="case-img">
-                         <!-- 熊猫公仔图 (文旅IP) -->
-                         <img src="https://images.unsplash.com/photo-1599409636242-75027c570f72?q=80&w=2670&auto=format&fit=crop" alt="文旅IP熊猫">
+                         <!-- 修复：文旅IP 熊猫公仔 -->
+                         <img src="https://images.unsplash.com/photo-1628260412297-a3377e45006f?q=80&w=2574&auto=format&fit=crop" alt="文旅IP熊猫">
                     </div>
                     <div class="case-content">
                         <h4>文旅与IP联名</h4>
@@ -559,7 +561,6 @@
             <div class="footer-grid">
                 <div class="footer-brand">
                     <h2>玄五文化 Xuan5 Culture</h2>
-                    <!-- 允许长文字换行 -->
                     <p style="word-wrap: break-word;">中小企数字GC服务商 · 致力于将数字技术与文化创意完美结合，打造独具特色的品牌传播方案。</p>
                     
                     <div class="social-icons">
@@ -589,7 +590,6 @@
                     </div>
                     <div>
                         <h4>邮箱 EMAIL</h4>
-                        <!-- 允许邮箱换行 -->
                         <p style="word-break: break-all;">pandapro@aliyun.com</p>
                     </div>
                     <div>
@@ -598,7 +598,6 @@
                     </div>
                     <div>
                         <h4>地址 ADDRESS</h4>
-                        <!-- 允许地址换行 -->
                         <p style="word-wrap: break-word;">广州市黄埔区科珠路232号</p>
                     </div>
                 </div>
@@ -609,11 +608,31 @@
         </div>
     </footer>
 
-    <a href="#" class="back-to-top" id="backToTop">
-        <i class="fas fa-arrow-up"></i>
-    </a>
+    <!-- 悬浮按钮组 -->
+    <div class="float-btns">
+        <!-- 咨询按钮 -->
+        <div class="float-btn" onclick="toggleWechatModal()">
+            <i class="fas fa-comment-dots"></i>
+        </div>
+        <!-- 回到顶部 -->
+        <a href="#" class="float-btn back-to-top" id="backToTop">
+            <i class="fas fa-arrow-up"></i>
+        </a>
+    </div>
+
+    <!-- 微信弹窗 -->
+    <div class="modal-overlay" id="wechatModal" onclick="toggleWechatModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-close" onclick="toggleWechatModal()">&times;</div>
+            <h3 style="margin-bottom:15px; color:#333;">扫码添加客服</h3>
+            <img src="./images/wechat.jpg" alt="微信二维码">
+            <p style="color:#666; font-size:14px;">微信号：pandapro88</p>
+            <p style="color:#666; font-size:14px;">电话：131-2649-2601</p>
+        </div>
+    </div>
 
     <script>
+        // 1. GEO密码锁
         function checkGeoPassword() {
             let password = prompt("请输入授权访问密码：");
             if (password === "XUAN5") {
@@ -623,6 +642,17 @@
             }
         }
 
+        // 2. 微信弹窗控制
+        function toggleWechatModal() {
+            const modal = document.getElementById('wechatModal');
+            if (modal.style.display === 'flex') {
+                modal.style.display = 'none';
+            } else {
+                modal.style.display = 'flex';
+            }
+        }
+
+        // 3. 轮播图
         const slides = document.querySelectorAll('.slide');
         const dots = document.querySelectorAll('.dot');
         let currentSlide = 0;
@@ -646,10 +676,12 @@
 
         let slideInterval = setInterval(nextSlide, 5000);
 
+        // 4. 日期更新
         const dateEl = document.getElementById('date');
         const now = new Date();
         dateEl.innerText = `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日`;
 
+        // 5. 滚动动画
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if(entry.isIntersecting) {
@@ -665,6 +697,7 @@
             observer.observe(el);
         });
 
+        // 6. 回到顶部
         const backToTopBtn = document.getElementById('backToTop');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 300) {
