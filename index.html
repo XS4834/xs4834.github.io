@@ -67,17 +67,11 @@
             gap: 12px;
         }
 
+        /* Logo图片样式 */
         .logo-img {
-            height: 50px;
+            height: 55px; /* 高度调适中 */
             width: auto;
             display: block;
-        }
-
-        .logo-text {
-            font-size: 24px;
-            font-weight: 900;
-            color: var(--brand-red);
-            letter-spacing: 2px;
         }
 
         .nav-links { display: flex; gap: 40px; }
@@ -120,11 +114,12 @@
         }
         .slide.active { opacity: 1; pointer-events: auto; }
         
+        /* 遮罩层 (让文字更清晰) */
         .slide::before {
             content: '';
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 100%);
+            background: linear-gradient(135deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 100%);
             z-index: 1;
         }
 
@@ -313,11 +308,8 @@
     <!-- 导航栏 -->
     <nav class="navbar">
         <div class="logo-container">
-            <!-- Logo 接口: 图片上传后取消注释即可 -->
-            <!-- <img src="./images/logo.png" alt="玄五文化" class="logo-img"> -->
-            <div class="logo-text">
-                <i class="fas fa-cube"></i> 玄五文化
-            </div>
+            <!-- ⬇️ 1. Logo 已接入：使用您上传的 logo.png -->
+            <img src="./images/logo.png" alt="玄五文化" class="logo-img">
         </div>
 
         <div class="nav-links">
@@ -331,8 +323,8 @@
 
     <!-- 全屏轮播 Hero 区域 -->
     <div class="hero-slider">
-        <!-- 幻灯片 1 -->
-        <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=2574&auto=format&fit=crop');">
+        <!-- 幻灯片 1：总愿景 (接入 banner1.jpg) -->
+        <div class="slide active" style="background-image: url('./images/banner1.jpg');">
             <div class="hero-content">
                 <h1 class="hero-title">为客户创造卓越的<br><span class="hero-highlight">品牌价值</span> 与 <span class="hero-highlight">商业效益</span></h1>
                 <p class="hero-subtitle">共创 · 共鸣 · 思想无限大 · 成长的边界不止步</p>
@@ -340,8 +332,8 @@
             </div>
         </div>
         
-        <!-- 幻灯片 2 -->
-        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2670&auto=format&fit=crop');">
+        <!-- 幻灯片 2：品牌策划 (接入 banner2.jpg) -->
+        <div class="slide" style="background-image: url('./images/banner2.jpg');">
             <div class="hero-content">
                 <h1 class="hero-title">品牌文化策划<br><span class="hero-highlight">Brand Planning</span></h1>
                 <p class="hero-subtitle">深入挖掘品牌DNA，打造独具个性的品牌故事</p>
@@ -349,7 +341,7 @@
             </div>
         </div>
 
-        <!-- 幻灯片 3 -->
+        <!-- 幻灯片 3：数字营销 (使用商用图) -->
         <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop');">
             <div class="hero-content">
                 <h1 class="hero-title">品牌数字营销<br><span class="hero-highlight">Digital Marketing</span></h1>
@@ -358,8 +350,8 @@
             </div>
         </div>
 
-        <!-- 幻灯片 4 -->
-        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=2670&auto=format&fit=crop');">
+        <!-- 幻灯片 4：活动营销 (接入 banner4.jpg 醒狮图) -->
+        <div class="slide" style="background-image: url('./images/banner4.jpg');">
             <div class="hero-content">
                 <h1 class="hero-title">活动文化营销<br><span class="hero-highlight">Event Marketing</span></h1>
                 <p class="hero-subtitle">线上线下联动，创造沉浸式交互体验，提升用户转化</p>
@@ -367,8 +359,8 @@
             </div>
         </div>
 
-        <!-- 幻灯片 5 -->
-        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=2565&auto=format&fit=crop');">
+        <!-- 幻灯片 5：数字技术 (替换为：赛博朋克虚拟主播) -->
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1580894732444-8ecded7900cd?q=80&w=2670&auto=format&fit=crop');">
             <div class="hero-content">
                 <h1 class="hero-title">数字文化技术<br><span class="hero-highlight">Digital Tech & AIGC</span></h1>
                 <p class="hero-subtitle">虚拟人 & 3D可视化，打破时空限制的情绪交互</p>
@@ -376,7 +368,7 @@
             </div>
         </div>
 
-        <!-- 幻灯片 6：GEO服务 -->
+        <!-- 幻灯片 6：GEO服务 (保留原图 + 密码锁) -->
         <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2672&auto=format&fit=crop');">
             <div class="hero-content">
                 <h1 class="hero-title">GEO 智能搜推服务<br><span class="hero-highlight">Generative Engine Optimization</span></h1>
@@ -519,7 +511,7 @@
                     <h2>玄五文化 Xuan5 Culture</h2>
                     <p>中小企数字GC服务商 · 致力于将数字技术与文化创意完美结合，打造独具特色的品牌传播方案。</p>
                     
-                    <!-- 社交媒体链接 -->
+                    <!-- 社交媒体链接口 -->
                     <div class="social-icons">
                         <a href="#" class="social-icon" title="微信"><i class="fab fa-weixin"></i></a>
                         <a href="#" class="social-icon" title="微博"><i class="fab fa-weibo"></i></a>
@@ -527,14 +519,13 @@
                         <a href="#" class="social-icon" title="小红书"><i class="fas fa-book-open"></i></a>
                     </div>
 
-                    <!-- 微信二维码位 -->
+                    <!-- ⬇️ 2. 微信二维码已接入：wechat.jpg -->
                     <div style="margin-top: 25px;">
                         <p style="font-size:12px; color:#888; margin-bottom:8px;">扫码添加项目负责人：</p>
-                        <!-- <img src="./images/wechat.jpg" style="width:100px; height:100px; border-radius:8px;" alt="微信二维码"> -->
+                        <img src="./images/wechat.jpg" style="width:100px; height:100px; border-radius:8px;" alt="微信二维码">
                     </div>
                 </div>
                 <div class="footer-info">
-                    <!-- 这里是更新后的信息栏 -->
                     <div>
                         <h4>项目联系 PROJECT CONTACT</h4>
                         <p>熊猫 Panda</p>
