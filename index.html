@@ -92,7 +92,7 @@
         }
         .nav-links a:hover::after { width: 100%; }
 
-        /* ================= 轮播 Hero 区域 (升级版) ================= */
+        /* ================= 轮播 Hero 区域 ================= */
         .hero-slider {
             height: 90vh;
             position: relative;
@@ -113,7 +113,7 @@
             text-align: center;
         }
         .slide.active { opacity: 1; }
-        /* 遮罩加深一点，保证文字清晰 */
+        /* 遮罩 */
         .slide::before {
             content: '';
             position: absolute;
@@ -161,6 +161,7 @@
             transition: var(--transition);
             box-shadow: 0 10px 20px rgba(211, 47, 47, 0.4);
             display: inline-block;
+            cursor: pointer; /* 确保鼠标是手型 */
         }
         .btn-hero:hover { background: transparent; color: white; }
         
@@ -291,7 +292,7 @@
     <!-- 导航栏 -->
     <nav class="navbar">
         <div class="logo-container">
-            <!-- ⬇️ Logo 图片接口 -->
+            <!-- Logo 图片接口: 只有上传了图片并去掉注释才会显示 -->
             <!-- <img src="./images/logo.png" alt="玄五文化" class="logo-img"> -->
             <div class="logo-text">
                 <i class="fas fa-cube"></i> 玄五文化
@@ -354,12 +355,13 @@
             </div>
         </div>
 
-        <!-- 幻灯片 6：GEO服务 -->
+        <!-- 幻灯片 6：GEO服务 (带密码锁) -->
         <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2672&auto=format&fit=crop');">
             <div class="hero-content">
                 <h1 class="hero-title">GEO 智能搜推服务<br><span class="hero-highlight">Generative Engine Optimization</span></h1>
                 <p class="hero-subtitle">基于多维矩阵审计，抢占生成式搜索流量高地</p>
-                <a href="#services" class="btn-hero">布局未来</a>
+                <!-- 这里的按钮触发 JS 密码检查 -->
+                <a href="javascript:void(0);" onclick="checkGeoPassword()" class="btn-hero">进入审计系统</a>
             </div>
         </div>
 
@@ -497,7 +499,7 @@
                     <h2>玄五文化 Xuan5 Culture</h2>
                     <p>中小企数字GC服务商 · 致力于将数字技术与文化创意完美结合，打造独具特色的品牌传播方案。</p>
                     
-                    <!-- ⬇️ 社交媒体链接口 ⬇️ -->
+                    <!-- 社交媒体链接口 -->
                     <div class="social-icons">
                         <a href="#" class="social-icon" title="微信"><i class="fab fa-weixin"></i></a>
                         <a href="#" class="social-icon" title="微博"><i class="fab fa-weibo"></i></a>
@@ -531,7 +533,22 @@
     </footer>
 
     <script>
-        // 自动轮播脚本
+        // 1. GEO密码锁功能
+        function checkGeoPassword() {
+            // 弹出密码输入框
+            let password = prompt("请输入访问密码 (XUAN5) 以进入系统：");
+            
+            // 校验密码
+            if (password === "XUAN5") {
+                // 密码正确，打开链接
+                window.open("https://oydcpmxzs3.sealosbja.site/geo-audit", "_blank");
+            } else if (password !== null) {
+                // 密码错误（排除点击取消的情况）
+                alert("密码错误，请重新输入或联系管理员。");
+            }
+        }
+
+        // 2. 自动轮播脚本
         const slides = document.querySelectorAll('.slide');
         const dots = document.querySelectorAll('.dot');
         let currentSlide = 0;
@@ -558,12 +575,12 @@
         // 自动播放间隔 5000ms
         let slideInterval = setInterval(nextSlide, 5000);
 
-        // 更新日期
+        // 3. 更新日期
         const dateEl = document.getElementById('date');
         const now = new Date();
         dateEl.innerText = `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日`;
 
-        // 滚动动画
+        // 4. 滚动动画
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if(entry.isIntersecting) {
