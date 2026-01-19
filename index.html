@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- ⬇️ 1. 新增 SEO 优化配置 -->
     <title>玄五文化 Xuan5 Culture - 中小企数字GC服务商 | 品牌策划 | 数字营销</title>
+    <!-- SEO 优化配置 -->
     <meta name="keywords" content="玄五文化, 广州数字营销, 品牌策划, 活动策划, AIGC数字内容, 小红书代运营, 抖音推广, GEO审计, 虚拟人技术, 4A广告公司">
     <meta name="description" content="玄五文化是一家中小企数字GC服务商，提供品牌文化策划、数字营销传播、活动文化营销及AIGC数字技术服务。拥有15年行业经验，服务500+知名客户，助您占领生成式搜索流量高地。">
     
@@ -28,7 +28,7 @@
 
         /* 基础重置 */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; /* 平滑滚动 */ }
+        html { scroll-behavior: smooth; }
         body {
             font-family: "PingFang SC", "Microsoft YaHei", -apple-system, sans-serif;
             color: var(--text-main);
@@ -116,11 +116,10 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            pointer-events: none; /* 让背景不阻挡点击 */
+            pointer-events: none; 
         }
         .slide.active { opacity: 1; pointer-events: auto; }
         
-        /* 遮罩 */
         .slide::before {
             content: '';
             position: absolute;
@@ -131,7 +130,7 @@
 
         .hero-content {
             position: relative;
-            z-index: 10; /* 提高层级，解决点击不灵敏问题 */
+            z-index: 10;
             color: white;
             max-width: 1100px;
             padding: 0 20px;
@@ -168,13 +167,12 @@
             transition: var(--transition);
             box-shadow: 0 10px 20px rgba(211, 47, 47, 0.4);
             display: inline-block;
-            cursor: pointer; /* 强制手型 */
+            cursor: pointer;
             position: relative;
-            z-index: 20; /* 按钮最高层级 */
+            z-index: 20;
         }
         .btn-hero:hover { background: transparent; color: white; }
         
-        /* 轮播指示点 */
         .slider-dots {
             position: absolute;
             bottom: 30px;
@@ -228,7 +226,7 @@
         }
         .section-header p { font-size: 18px; color: var(--text-sub); }
 
-        /* ================= 核心服务 (一行 5 列) ================= */
+        /* ================= 核心服务 ================= */
         .services-row {
             display: flex;
             gap: 20px;
@@ -269,7 +267,6 @@
         .footer-brand h2 { font-size: 30px; margin-bottom: 15px; }
         .footer-brand p { color: #888; max-width: 400px; }
         
-        /* 社交图标样式 */
         .social-icons { display: flex; gap: 20px; margin-top: 30px; }
         .social-icon {
             width: 45px; height: 45px; border-radius: 50%; background: rgba(255,255,255,0.1);
@@ -316,7 +313,7 @@
     <!-- 导航栏 -->
     <nav class="navbar">
         <div class="logo-container">
-            <!-- Logo 接口 -->
+            <!-- Logo 接口: 图片上传后取消注释即可 -->
             <!-- <img src="./images/logo.png" alt="玄五文化" class="logo-img"> -->
             <div class="logo-text">
                 <i class="fas fa-cube"></i> 玄五文化
@@ -332,7 +329,7 @@
         </div>
     </nav>
 
-    <!-- 全屏轮播 Hero 区域 (6张) -->
+    <!-- 全屏轮播 Hero 区域 -->
     <div class="hero-slider">
         <!-- 幻灯片 1 -->
         <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=2574&auto=format&fit=crop');">
@@ -379,12 +376,11 @@
             </div>
         </div>
 
-        <!-- 幻灯片 6：GEO服务 (修复点击和密码问题) -->
+        <!-- 幻灯片 6：GEO服务 -->
         <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2672&auto=format&fit=crop');">
             <div class="hero-content">
                 <h1 class="hero-title">GEO 智能搜推服务<br><span class="hero-highlight">Generative Engine Optimization</span></h1>
                 <p class="hero-subtitle">基于多维矩阵审计，抢占生成式搜索流量高地</p>
-                <!-- 这里已经修复了点击层级，确保一点即应 -->
                 <button onclick="checkGeoPassword()" class="btn-hero">进入审计系统</button>
             </div>
         </div>
@@ -523,7 +519,7 @@
                     <h2>玄五文化 Xuan5 Culture</h2>
                     <p>中小企数字GC服务商 · 致力于将数字技术与文化创意完美结合，打造独具特色的品牌传播方案。</p>
                     
-                    <!-- 社交媒体链接口 -->
+                    <!-- 社交媒体链接 -->
                     <div class="social-icons">
                         <a href="#" class="social-icon" title="微信"><i class="fab fa-weixin"></i></a>
                         <a href="#" class="social-icon" title="微博"><i class="fab fa-weibo"></i></a>
@@ -531,25 +527,33 @@
                         <a href="#" class="social-icon" title="小红书"><i class="fas fa-book-open"></i></a>
                     </div>
 
-                    <!-- ⬇️ 2. 新增：微信二维码位 -->
+                    <!-- 微信二维码位 -->
                     <div style="margin-top: 25px;">
                         <p style="font-size:12px; color:#888; margin-bottom:8px;">扫码添加项目负责人：</p>
-                        <!-- 请把您的二维码图片命名为 wechat.jpg 放到 images 文件夹，并取消下面注释 -->
                         <!-- <img src="./images/wechat.jpg" style="width:100px; height:100px; border-radius:8px;" alt="微信二维码"> -->
                     </div>
                 </div>
                 <div class="footer-info">
+                    <!-- 这里是更新后的信息栏 -->
                     <div>
                         <h4>项目联系 PROJECT CONTACT</h4>
                         <p>熊猫 Panda</p>
                     </div>
                     <div>
                         <h4>联系电话 MOBILE PHONE</h4>
-                        <p>139-2605-6601</p>
+                        <p>131-2649-2601</p>
                     </div>
                     <div>
                         <h4>微信 WECHAT</h4>
-                        <p>funnypanda88</p>
+                        <p>pandapro88</p>
+                    </div>
+                    <div>
+                        <h4>邮箱 EMAIL</h4>
+                        <p>pandapro@aliyun.com</p>
+                    </div>
+                    <div>
+                        <h4>办公时间 OFFICE HOURS</h4>
+                        <p>09:00-18:00</p>
                     </div>
                     <div>
                         <h4>地址 ADDRESS</h4>
@@ -563,18 +567,15 @@
         </div>
     </footer>
 
-    <!-- ⬇️ 3. 新增：回到顶部按钮 -->
+    <!-- 回到顶部按钮 -->
     <a href="#" class="back-to-top" id="backToTop">
         <i class="fas fa-arrow-up"></i>
     </a>
 
     <script>
-        // 1. GEO密码锁功能 (修复：不暴露密码)
+        // 1. GEO密码锁
         function checkGeoPassword() {
-            // 提示文案已修改，不包含密码
             let password = prompt("请输入授权访问密码：");
-            
-            // 后台校验密码
             if (password === "XUAN5") {
                 window.open("https://oydcpmxzs3.sealosbja.site/geo-audit", "_blank");
             } else if (password !== null) {
@@ -582,7 +583,7 @@
             }
         }
 
-        // 2. 自动轮播脚本
+        // 2. 轮播图
         const slides = document.querySelectorAll('.slide');
         const dots = document.querySelectorAll('.dot');
         let currentSlide = 0;
@@ -590,7 +591,6 @@
         function updateSlide() {
             slides.forEach(s => s.classList.remove('active'));
             dots.forEach(d => d.classList.remove('active'));
-            
             slides[currentSlide].classList.add('active');
             dots[currentSlide].classList.add('active');
         }
@@ -607,12 +607,12 @@
 
         let slideInterval = setInterval(nextSlide, 5000);
 
-        // 3. 更新日期
+        // 3. 日期更新
         const dateEl = document.getElementById('date');
         const now = new Date();
         dateEl.innerText = `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日`;
 
-        // 4. 滚动显现动画
+        // 4. 滚动动画
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if(entry.isIntersecting) {
@@ -628,7 +628,7 @@
             observer.observe(el);
         });
 
-        // 5. 回到顶部按钮逻辑
+        // 5. 回到顶部
         const backToTopBtn = document.getElementById('backToTop');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 300) {
