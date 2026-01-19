@@ -18,6 +18,7 @@
             --text-main: #111111;
             --text-sub: #555555;
             --bg-body: #FFFFFF;
+            --bg-light: #F9F9F9;
             --container-width: 1400px;
             --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -129,10 +130,9 @@
             color: white;
             max-width: 1100px;
             padding: 0 20px;
-            /* 电脑端默认样式 */
             display: flex;
             flex-direction: column;
-            align-items: center; /* 确保电脑端也绝对居中 */
+            align-items: center;
         }
         .hero-title {
             font-size: 56px;
@@ -244,12 +244,57 @@
         .service-card p { font-size: 14px; color: #666; line-height: 1.8; text-align: left; }
         .hl { color: var(--brand-red); font-weight: bold; background: rgba(211, 47, 47, 0.05); padding: 0 3px; }
 
+        /* ================= 标准化服务流程 SOP (务实版) ================= */
+        .process-section {
+            background-color: var(--bg-light);
+            padding: 80px 0;
+            margin-top: 80px;
+        }
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+        .process-card {
+            background: white;
+            padding: 30px 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+            transition: var(--transition);
+            border-top: 4px solid var(--brand-red);
+        }
+        .process-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        .process-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+        .process-title i { font-size: 28px; color: var(--brand-red); }
+        .process-title h3 { font-size: 20px; font-weight: 800; color: var(--text-main); }
+        .step-list { padding: 0; margin: 0; }
+        .step-item {
+            display: flex; align-items: flex-start; margin-bottom: 15px;
+            font-size: 14px; color: #555; line-height: 1.5;
+        }
+        .step-item::before {
+            content: ''; min-width: 8px; height: 8px; background: var(--brand-red);
+            border-radius: 50%; margin-top: 7px; margin-right: 12px; opacity: 0.6;
+        }
+        .step-item:last-child { margin-bottom: 0; }
+
         /* ================= 成功案例 ================= */
-        .cases-section { background: #FAFAFA; padding: 20px 0 100px; margin-top: 80px; }
+        .cases-section { background: #FFFFFF; padding: 20px 0 100px; margin-top: 0; }
         .cases-row { display: flex; gap: 25px; }
         .case-item {
             flex: 1; background: white; border-radius: 15px; overflow: hidden;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: var(--transition); cursor: pointer;
+            border: 1px solid #eee;
         }
         .case-item:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
         .case-img { height: 240px; background-color: #eee; position: relative; overflow: hidden; }
@@ -260,7 +305,7 @@
         .case-content p { font-size: 14px; color: #666; margin-bottom: 15px; }
         .case-tag { font-size: 12px; color: white; background: var(--brand-red); padding: 4px 10px; border-radius: 4px; }
 
-        /* ================= 页脚 & 社交图标 ================= */
+        /* ================= 页脚 ================= */
         footer { background: #1a1a1a; color: white; padding: 80px 0 30px; margin-top: 80px; }
         .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; padding-bottom: 50px; border-bottom: 1px solid #333; }
         .footer-brand h2 { font-size: 30px; margin-bottom: 15px; }
@@ -279,7 +324,6 @@
         .footer-info p { font-size: 18px; font-weight: bold; }
         .copyright { text-align: center; padding-top: 30px; color: #555; font-size: 14px; }
 
-        /* 悬浮按钮组 */
         .float-btns {
             position: fixed; bottom: 30px; right: 30px; z-index: 999;
             display: flex; flex-direction: column; gap: 15px;
@@ -314,54 +358,28 @@
             to { transform: scale(1); opacity: 1; }
         }
 
-        /* ================= 🚨 移动端专属修复补丁 (最终修复) ================= */
+        /* ================= 🚨 移动端专属修复补丁 ================= */
         @media (max-width: 768px) {
-            
             .container { padding: 0 20px; }
             .navbar { padding: 0 20px; }
             .nav-links { display: none; } 
 
-            /* 1. 强制居中对齐 */
-            .hero-content {
-                width: 100%;
-                text-align: center; /* 确保文字居中 */
-                padding: 0 10px; /* 减少内边距，给文字更多空间 */
-            }
-
-            /* 2. 标题微调 */
-            .hero-title {
-                font-size: 24px !important; 
-                line-height: 1.4;
-                margin-bottom: 12px;
-            }
-
-            /* 3. 小字(副标题)终极修复 */
+            .hero-content { width: 100%; text-align: center; padding: 0 10px; }
+            .hero-title { font-size: 24px !important; line-height: 1.4; margin-bottom: 12px; }
             .hero-subtitle {
-                font-size: 12.5px !important; /* 缩小到极限清晰字号 */
-                padding: 6px 10px; /* 减少内边距 */
-                white-space: normal;
-                line-height: 1.5;
-                width: auto;
-                max-width: 95%; /* 允许占据95%屏幕宽度 */
+                font-size: 12.5px !important; padding: 6px 10px; white-space: normal; line-height: 1.5; width: auto; max-width: 95%;
             }
-
-            .btn-hero {
-                padding: 10px 25px;
-                font-size: 14px;
-            }
+            .btn-hero { padding: 10px 25px; font-size: 14px; }
 
             .stats-grid { flex-wrap: wrap; }
-            .stat-item { 
-                flex: 0 0 50%; 
-                border-bottom: 1px solid rgba(255,255,255,0.2); 
-                border-right: none; 
-                padding: 20px 0; 
-            }
+            .stat-item { flex: 0 0 50%; border-bottom: 1px solid rgba(255,255,255,0.2); border-right: none; padding: 20px 0; }
             .stat-item:last-child { flex: 0 0 100%; border-bottom: none; }
             .stat-number { font-size: 36px; }
 
             .services-row, .cases-row { flex-wrap: wrap; }
             .service-card, .case-item { flex: 0 0 100%; margin-bottom: 20px; }
+
+            .process-grid { grid-template-columns: 1fr; gap: 20px; }
 
             .footer-grid { grid-template-columns: 1fr; gap: 40px; }
             .footer-brand p { font-size: 14px; word-wrap: break-word; }
@@ -372,25 +390,23 @@
 </head>
 <body>
 
-    <!-- 导航栏 -->
     <nav class="navbar">
         <div class="logo-container">
             <img src="./images/logo.png" alt="玄五文化" class="logo-img">
             <div class="logo-text">玄五文化</div>
         </div>
-
         <div class="nav-links">
             <a href="#">首页</a>
             <a href="#services">核心业务</a>
+            <a href="#process">服务流程</a>
             <a href="#cases">成功案例</a>
             <a href="#about">关于我们</a>
             <a href="#contact">联系我们</a>
         </div>
     </nav>
 
-    <!-- 全屏轮播 Hero 区域 -->
     <div class="hero-slider">
-        <!-- 幻灯片 1：总愿景 (banner1.jpg) -->
+        <!-- 幻灯片 1：总愿景 -->
         <div class="slide active" style="background-image: url('./images/banner1.jpg');">
             <div class="hero-content">
                 <h1 class="hero-title">为客户创造卓越的<br><span class="hero-highlight">品牌价值</span> 与 <span class="hero-highlight">商业效益</span></h1>
@@ -399,7 +415,7 @@
             </div>
         </div>
         
-        <!-- 幻灯片 2：品牌策划 (banner2.jpg) -->
+        <!-- 幻灯片 2：品牌策划 -->
         <div class="slide" style="background-image: url('./images/banner2.jpg');">
             <div class="hero-content">
                 <h1 class="hero-title">品牌文化策划<br><span class="hero-highlight">Brand Planning</span></h1>
@@ -417,7 +433,7 @@
             </div>
         </div>
 
-        <!-- 幻灯片 4：活动营销 (banner4.jpg) -->
+        <!-- 幻灯片 4：活动营销 -->
         <div class="slide" style="background-image: url('./images/banner4.jpg');">
             <div class="hero-content">
                 <h1 class="hero-title">活动文化营销<br><span class="hero-highlight">Event Marketing</span></h1>
@@ -426,7 +442,7 @@
             </div>
         </div>
 
-        <!-- 幻灯片 5：数字技术 (蓝色线框脸) -->
+        <!-- 幻灯片 5：数字技术 -->
         <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2670&auto=format&fit=crop');">
             <div class="hero-content">
                 <h1 class="hero-title">数字文化技术<br><span class="hero-highlight">Digital Tech & AIGC</span></h1>
@@ -517,6 +533,82 @@
         </div>
     </section>
 
+    <!-- 【新增】标准化服务流程 SOP (务实文案) -->
+    <section id="process" class="process-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>标准化服务流程 SOP</h2>
+                <p>严谨的流程控制，确保项目高效落地</p>
+            </div>
+            
+            <div class="process-grid">
+                <!-- 1. 策划 -->
+                <div class="process-card">
+                    <div class="process-title">
+                        <i class="fas fa-lightbulb"></i>
+                        <h3>品牌策划</h3>
+                    </div>
+                    <ul class="step-list">
+                        <li class="step-item">客户需求深度沟通</li>
+                        <li class="step-item">行业调研与竞品分析</li>
+                        <li class="step-item">核心策略推演</li>
+                        <li class="step-item">创意构思与文案撰写</li>
+                        <li class="step-item">方案提案与修订</li>
+                        <li class="step-item">最终方案确认</li>
+                    </ul>
+                </div>
+
+                <!-- 2. 设计 -->
+                <div class="process-card">
+                    <div class="process-title">
+                        <i class="fas fa-paint-brush"></i>
+                        <h3>视觉设计</h3>
+                    </div>
+                    <ul class="step-list">
+                        <li class="step-item">视觉风格定调</li>
+                        <li class="step-item">KV主视觉设计</li>
+                        <li class="step-item">延展物料设计</li>
+                        <li class="step-item">空间与舞美3D渲染</li>
+                        <li class="step-item">设计初稿反馈与调整</li>
+                        <li class="step-item">完稿输出与打样校对</li>
+                    </ul>
+                </div>
+
+                <!-- 3. 活动 -->
+                <div class="process-card">
+                    <div class="process-title">
+                        <i class="fas fa-flag-checkered"></i>
+                        <h3>活动执行</h3>
+                    </div>
+                    <ul class="step-list">
+                        <li class="step-item">组建专项执行小组</li>
+                        <li class="step-item">物料制作与供应商管理</li>
+                        <li class="step-item">进场搭建与安全验收</li>
+                        <li class="step-item">演艺人员彩排与走位</li>
+                        <li class="step-item">全流程带妆彩排</li>
+                        <li class="step-item">现场执行与控场</li>
+                    </ul>
+                </div>
+
+                <!-- 4. GEO (去油版) -->
+                <div class="process-card">
+                    <div class="process-title">
+                        <i class="fas fa-search-dollar"></i>
+                        <h3>GEO 服务</h3>
+                    </div>
+                    <ul class="step-list">
+                        <li class="step-item">品牌现状基础审计</li>
+                        <li class="step-item">关键词分析与挖掘</li>
+                        <li class="step-item">内容优化与埋点</li>
+                        <li class="step-item">多平台内容铺设</li>
+                        <li class="step-item">AI搜索表现监测</li>
+                        <li class="step-item">定期复盘与策略调整</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- 成功案例 -->
     <section id="cases" class="cases-section">
         <div class="container">
@@ -557,7 +649,6 @@
                 </div>
                 <div class="case-item">
                     <div class="case-img">
-                         <!-- 修复：文旅IP 熊猫公仔 -->
                          <img src="https://images.unsplash.com/photo-1628260412297-a3377e45006f?q=80&w=2574&auto=format&fit=crop" alt="文旅IP熊猫">
                     </div>
                     <div class="case-content">
@@ -625,11 +716,9 @@
 
     <!-- 悬浮按钮组 -->
     <div class="float-btns">
-        <!-- 咨询按钮 -->
         <div class="float-btn" onclick="toggleWechatModal()">
             <i class="fas fa-comment-dots"></i>
         </div>
-        <!-- 回到顶部 -->
         <a href="#" class="float-btn back-to-top" id="backToTop">
             <i class="fas fa-arrow-up"></i>
         </a>
@@ -700,7 +789,7 @@
                 }
             });
         });
-        document.querySelectorAll('.service-card, .case-item, .stat-item').forEach((el, index) => {
+        document.querySelectorAll('.service-card, .case-item, .stat-item, .process-card').forEach((el, index) => {
             el.style.opacity = 0;
             el.style.transform = 'translateY(20px)';
             el.style.transition = `all 0.6s ease ${index * 0.1}s`;
