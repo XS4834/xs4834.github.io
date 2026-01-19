@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>玄五文化 Xuan5 Culture - 中小企数字GC服务商 | 品牌策划 | 数字营销</title>
-    <!-- SEO 优化配置 -->
+    <!-- SEO -->
     <meta name="keywords" content="玄五文化, 广州数字营销, 品牌策划, 活动策划, AIGC数字内容, 小红书代运营, 抖音推广, GEO审计, 虚拟人技术, 4A广告公司">
     <meta name="description" content="玄五文化是一家中小企数字GC服务商，提供品牌文化策划、数字营销传播、活动文化营销及AIGC数字技术服务。拥有15年行业经验，服务500+知名客户，助您占领生成式搜索流量高地。">
     
@@ -12,21 +12,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            /* 品牌色体系 */
             --brand-red: #D32F2F; 
             --brand-dark: #8B0000;
-            --brand-gold: #FFD700; /* 香槟金 */
-            
+            --brand-gold: #FFD700; 
             --text-main: #111111;
             --text-sub: #555555;
             --bg-body: #FFFFFF;
-            
-            /* 布局参数 */
             --container-width: 1400px;
             --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* 基础重置 */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body {
@@ -38,7 +33,6 @@
         }
         a { text-decoration: none; color: inherit; }
 
-        /* 通用容器 */
         .container {
             max-width: var(--container-width);
             margin: 0 auto;
@@ -54,7 +48,7 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.98); /* 不透明度稍微调高，更清晰 */
             backdrop-filter: blur(10px);
             z-index: 1000;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
@@ -64,14 +58,22 @@
         .logo-container {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 15px; /* 图片和文字的间距 */
         }
 
-        /* Logo图片样式 */
         .logo-img {
-            height: 55px; /* 高度调适中 */
+            height: 50px;
             width: auto;
             display: block;
+        }
+
+        /* 修复：文字Logo样式 */
+        .logo-text {
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--brand-red);
+            letter-spacing: 2px;
+            line-height: 1;
         }
 
         .nav-links { display: flex; gap: 40px; }
@@ -114,12 +116,13 @@
         }
         .slide.active { opacity: 1; pointer-events: auto; }
         
-        /* 遮罩层 (让文字更清晰) */
+        /* 修复：加深遮罩层，让图片变暗（灰度更高），文字更清晰 */
         .slide::before {
             content: '';
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 100%);
+            /* 这里调整了透明度：0.8 到 0.5，比之前更黑一点 */
+            background: linear-gradient(135deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 100%);
             z-index: 1;
         }
 
@@ -136,7 +139,7 @@
             line-height: 1.2;
             margin-bottom: 25px;
             letter-spacing: 2px;
-            text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            text-shadow: 0 10px 30px rgba(0,0,0,0.9);
         }
         .hero-highlight { color: var(--brand-gold); font-style: italic; padding: 0 10px; }
         .hero-subtitle { 
@@ -145,7 +148,7 @@
             margin-bottom: 40px; 
             opacity: 0.95;
             letter-spacing: 1px;
-            background: rgba(0,0,0,0.3);
+            background: rgba(0,0,0,0.4); /* 背景条也加深一点 */
             display: inline-block;
             padding: 10px 20px;
             border-radius: 4px;
@@ -275,7 +278,6 @@
         .footer-info p { font-size: 18px; font-weight: bold; }
         .copyright { text-align: center; padding-top: 30px; color: #555; font-size: 14px; }
 
-        /* 回到顶部按钮 */
         .back-to-top {
             position: fixed; bottom: 30px; right: 30px;
             background: var(--brand-red); color: white;
@@ -308,8 +310,10 @@
     <!-- 导航栏 -->
     <nav class="navbar">
         <div class="logo-container">
-            <!-- ⬇️ 1. Logo 已接入：使用您上传的 logo.png -->
+            <!-- Logo图片 -->
             <img src="./images/logo.png" alt="玄五文化" class="logo-img">
+            <!-- 修复：文字加回来了 -->
+            <div class="logo-text">玄五文化</div>
         </div>
 
         <div class="nav-links">
@@ -323,7 +327,7 @@
 
     <!-- 全屏轮播 Hero 区域 -->
     <div class="hero-slider">
-        <!-- 幻灯片 1：总愿景 (接入 banner1.jpg) -->
+        <!-- 幻灯片 1：总愿景 -->
         <div class="slide active" style="background-image: url('./images/banner1.jpg');">
             <div class="hero-content">
                 <h1 class="hero-title">为客户创造卓越的<br><span class="hero-highlight">品牌价值</span> 与 <span class="hero-highlight">商业效益</span></h1>
@@ -332,7 +336,7 @@
             </div>
         </div>
         
-        <!-- 幻灯片 2：品牌策划 (接入 banner2.jpg) -->
+        <!-- 幻灯片 2：品牌策划 -->
         <div class="slide" style="background-image: url('./images/banner2.jpg');">
             <div class="hero-content">
                 <h1 class="hero-title">品牌文化策划<br><span class="hero-highlight">Brand Planning</span></h1>
@@ -341,7 +345,7 @@
             </div>
         </div>
 
-        <!-- 幻灯片 3：数字营销 (使用商用图) -->
+        <!-- 幻灯片 3：数字营销 -->
         <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop');">
             <div class="hero-content">
                 <h1 class="hero-title">品牌数字营销<br><span class="hero-highlight">Digital Marketing</span></h1>
@@ -350,7 +354,7 @@
             </div>
         </div>
 
-        <!-- 幻灯片 4：活动营销 (接入 banner4.jpg 醒狮图) -->
+        <!-- 幻灯片 4：活动营销 -->
         <div class="slide" style="background-image: url('./images/banner4.jpg');">
             <div class="hero-content">
                 <h1 class="hero-title">活动文化营销<br><span class="hero-highlight">Event Marketing</span></h1>
@@ -359,8 +363,8 @@
             </div>
         </div>
 
-        <!-- 幻灯片 5：数字技术 (替换为：赛博朋克虚拟主播) -->
-        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1580894732444-8ecded7900cd?q=80&w=2670&auto=format&fit=crop');">
+        <!-- 幻灯片 5：数字技术 (修复：换回了蓝色的线框建模脸) -->
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2670&auto=format&fit=crop');">
             <div class="hero-content">
                 <h1 class="hero-title">数字文化技术<br><span class="hero-highlight">Digital Tech & AIGC</span></h1>
                 <p class="hero-subtitle">虚拟人 & 3D可视化，打破时空限制的情绪交互</p>
@@ -368,7 +372,7 @@
             </div>
         </div>
 
-        <!-- 幻灯片 6：GEO服务 (保留原图 + 密码锁) -->
+        <!-- 幻灯片 6：GEO服务 -->
         <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2672&auto=format&fit=crop');">
             <div class="hero-content">
                 <h1 class="hero-title">GEO 智能搜推服务<br><span class="hero-highlight">Generative Engine Optimization</span></h1>
@@ -377,7 +381,6 @@
             </div>
         </div>
 
-        <!-- 指示点 -->
         <div class="slider-dots">
             <div class="dot active" onclick="goToSlide(0)"></div>
             <div class="dot" onclick="goToSlide(1)"></div>
@@ -491,7 +494,8 @@
                 </div>
                 <div class="case-item">
                     <div class="case-img">
-                         <img src="https://images.unsplash.com/photo-1533174072545-e8d4aa97edf9?q=80&w=2574&auto=format&fit=crop" alt="文旅IP">
+                         <!-- 修复：替换成了可爱的熊猫公仔图 -->
+                         <img src="https://images.unsplash.com/photo-1628260412297-a3377e45006f?q=80&w=2574&auto=format&fit=crop" alt="文旅IP熊猫">
                     </div>
                     <div class="case-content">
                         <h4>文旅与IP联名</h4>
@@ -511,7 +515,6 @@
                     <h2>玄五文化 Xuan5 Culture</h2>
                     <p>中小企数字GC服务商 · 致力于将数字技术与文化创意完美结合，打造独具特色的品牌传播方案。</p>
                     
-                    <!-- 社交媒体链接口 -->
                     <div class="social-icons">
                         <a href="#" class="social-icon" title="微信"><i class="fab fa-weixin"></i></a>
                         <a href="#" class="social-icon" title="微博"><i class="fab fa-weibo"></i></a>
@@ -519,7 +522,6 @@
                         <a href="#" class="social-icon" title="小红书"><i class="fas fa-book-open"></i></a>
                     </div>
 
-                    <!-- ⬇️ 2. 微信二维码已接入：wechat.jpg -->
                     <div style="margin-top: 25px;">
                         <p style="font-size:12px; color:#888; margin-bottom:8px;">扫码添加项目负责人：</p>
                         <img src="./images/wechat.jpg" style="width:100px; height:100px; border-radius:8px;" alt="微信二维码">
@@ -558,13 +560,11 @@
         </div>
     </footer>
 
-    <!-- 回到顶部按钮 -->
     <a href="#" class="back-to-top" id="backToTop">
         <i class="fas fa-arrow-up"></i>
     </a>
 
     <script>
-        // 1. GEO密码锁
         function checkGeoPassword() {
             let password = prompt("请输入授权访问密码：");
             if (password === "XUAN5") {
@@ -574,7 +574,6 @@
             }
         }
 
-        // 2. 轮播图
         const slides = document.querySelectorAll('.slide');
         const dots = document.querySelectorAll('.dot');
         let currentSlide = 0;
@@ -598,12 +597,10 @@
 
         let slideInterval = setInterval(nextSlide, 5000);
 
-        // 3. 日期更新
         const dateEl = document.getElementById('date');
         const now = new Date();
         dateEl.innerText = `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日`;
 
-        // 4. 滚动动画
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if(entry.isIntersecting) {
@@ -619,7 +616,6 @@
             observer.observe(el);
         });
 
-        // 5. 回到顶部
         const backToTopBtn = document.getElementById('backToTop');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 300) {
