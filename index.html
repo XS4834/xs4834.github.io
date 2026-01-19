@@ -3,90 +3,527 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>玄五文化数字科技 - 中小企数字GC服务商</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>玄五文化 Xuan5 Culture - 中小企数字GC服务商</title>
+    <!-- 引入图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .brand-hero {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        :root {
+            /* 品牌色 - 提取自PPT */
+            --brand-red: #C62828; 
+            --brand-dark: #8E0000;
+            --text-main: #1D1D1F; /* 苹果风深灰 */
+            --text-sub: #86868B;
+            --bg-body: #FFFFFF;
+            --bg-light: #F5F5F7;
+            
+            /* 重点标注色 (浅黄) */
+            --mark-bg: #FFF9C4; 
+            
+            /* 布局参数 */
+            --card-radius: 12px;
+            --container-width: 1400px; /* 更宽的布局以适应一行排列 */
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* 基础重置 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-main);
+            background-color: var(--bg-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* 通用容器 */
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* 荧光笔高亮效果 */
+        .highlight-mark {
+            background: linear-gradient(180deg, rgba(255,255,255,0) 50%, var(--mark-bg) 50%);
+            padding: 0 4px;
+            font-weight: 600;
+            color: #000;
+            display: inline-block;
+            line-height: 1.4;
+        }
+
+        /* ================= 导航栏 ================= */
+        .navbar {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+        }
+
+        .nav-logo img {
+            height: 40px; /* Logo高度控制 */
+            width: auto;
+        }
+        /* 如果没有图片，文字Logo样式 */
+        .nav-logo-text {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--brand-red);
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+        }
+        .nav-links a {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-main);
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: var(--brand-red); }
+
+        /* ================= 头部 Hero ================= */
+        .hero {
+            height: 85vh;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
             color: white;
-            padding: 100px 0;
-        }
-        .service-card {
-            transition: transform 0.3s;
-            border: none;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-        }
-        .service-card:hover {
-            transform: translateY(-10px);
-        }
-        .nav-brand {
-            font-weight: bold;
-            font-size: 1.5rem;
-        }
-        .section-title {
+            display: flex;
+            align-items: center;
             position: relative;
-            padding-bottom: 15px;
-            margin-bottom: 40px;
+            overflow: hidden;
         }
-        .section-title::after {
+        
+        /* 背景装饰纹理 (模拟玄五Logo结构) */
+        .hero::after {
             content: '';
             position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background: #007bff;
+            right: -10%;
+            top: -20%;
+            width: 800px;
+            height: 800px;
+            border: 2px solid rgba(198, 40, 40, 0.1);
+            border-radius: 40%;
+            transform: rotate(45deg);
+            animation: float 20s infinite linear;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: 64px;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 24px;
+            font-weight: 300;
+            opacity: 0.9;
+            margin-bottom: 40px;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 16px 40px;
+            background: var(--brand-red);
+            color: white;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(198, 40, 40, 0.3);
+        }
+
+        /* ================= 通用标题 ================= */
+        .section-header {
+            text-align: center;
+            margin: 100px 0 60px;
+        }
+        .section-header h2 {
+            font-size: 40px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        .section-header p {
+            color: var(--text-sub);
+            font-size: 18px;
+        }
+
+        /* ================= 核心服务 (一行排列) ================= */
+        .services-row {
+            display: flex; /* Flex布局实现一行 */
+            justify-content: space-between;
+            gap: 20px;
+            padding-bottom: 40px;
+        }
+
+        .service-card {
+            flex: 1; /* 均分宽度 */
+            background: white;
+            padding: 40px 30px;
+            border-radius: var(--card-radius);
+            border: 1px solid #eee;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card:hover {
+            border-color: transparent;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            transform: translateY(-10px);
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: var(--brand-red);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+            transform-origin: left;
+        }
+        .service-card:hover::before { transform: scaleX(1); }
+
+        .service-icon {
+            font-size: 32px;
+            color: var(--brand-red);
+            margin-bottom: 24px;
+        }
+
+        .service-card h3 {
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+
+        .service-card p {
+            font-size: 14px;
+            color: var(--text-sub);
+            line-height: 1.8;
+            text-align: justify;
+        }
+
+        /* ================= 成功案例 (图片占位 + 一行排列) ================= */
+        .cases-section {
+            background-color: var(--bg-light);
+            padding: 20px 0 100px;
+        }
+
+        .cases-row {
+            display: flex;
+            gap: 24px;
+        }
+
+        .case-item {
+            flex: 1;
+            background: white;
+            border-radius: var(--card-radius);
+            overflow: hidden;
+            group: case;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .case-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+        }
+
+        /* 图片容器 - 预留位置 */
+        .case-img-wrapper {
+            width: 100%;
+            height: 220px; /* 固定高度确保整齐 */
+            background-color: #ddd;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 如果您有图片，img标签会覆盖背景色 */
+        .case-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s;
+        }
+        .case-item:hover .case-img-wrapper img {
+            transform: scale(1.05);
+        }
+
+        /* 这里的CSS是为了在没有图片时显示占位文字，有图片后可删除 */
+        .placeholder-text {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            color: #888;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .case-content {
+            padding: 24px;
+        }
+        .case-content h4 {
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+        .case-content p {
+            font-size: 13px;
+            color: var(--text-sub);
+            margin-bottom: 15px;
+        }
+        .case-tags span {
+            font-size: 12px;
+            color: var(--brand-red);
+            background: rgba(198, 40, 40, 0.05);
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-right: 6px;
+        }
+
+        /* ================= 联系我们 (模仿参考网站布局) ================= */
+        .contact-section {
+            padding: 100px 0;
+            background: white;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr; /* 左侧文字，右侧信息 */
+            gap: 60px;
+            align-items: start;
+        }
+
+        .contact-left h2 {
+            font-size: 48px;
+            line-height: 1.2;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, var(--brand-dark), var(--brand-red));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .contact-info-box {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+        }
+
+        .info-item h5 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-sub);
+            margin-bottom: 10px;
+        }
+        .info-item p {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--text-main);
+        }
+        .info-item .copy-btn {
+            font-size: 12px;
+            color: var(--brand-red);
+            margin-left: 8px;
+            cursor: pointer;
+            border-bottom: 1px solid transparent;
+        }
+        .info-item .copy-btn:hover { border-bottom-color: var(--brand-red); }
+
+        /* ================= 页脚 ================= */
+        footer {
+            background: #111;
+            color: #666;
+            padding: 60px 0 30px;
+            font-size: 14px;
+        }
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding-bottom: 40px;
+            border-bottom: 1px solid #222;
+        }
+        .footer-logo {
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .update-time {
+            font-size: 12px;
+            opacity: 0.5;
+        }
+
+        /* 动画关键帧 */
+        @keyframes float {
+            0% { transform: rotate(45deg) translate(0, 0); }
+            50% { transform: rotate(50deg) translate(-20px, 20px); }
+            100% { transform: rotate(45deg) translate(0, 0); }
+        }
+
+        /* 响应式适配 - 手机端依然需要堆叠，否则一行看不清 */
+        @media (max-width: 1024px) {
+            :root { --container-width: 100%; }
+            .container { padding: 0 20px; }
+            .hero h1 { font-size: 42px; }
+            .services-row, .cases-row { flex-wrap: wrap; }
+            .service-card, .case-item { flex: 0 0 48%; }
+            .contact-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .service-card, .case-item { flex: 0 0 100%; }
+            .navbar { display: none; /* 简化演示，实际需加汉堡菜单 */ }
         }
     </style>
 </head>
 <body>
+
     <!-- 导航栏 -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
-        <div class="container">
-            <a class="navbar-brand nav-brand" href="#">
-                <span style="color: #333;">玄五文化</span>
-                <small class="text-muted">Xuan5 Culture</small>
+    <nav class="navbar container">
+        <div class="nav-logo">
+            <!-- 【替换指引】请将您的 logo.png 放入 images 文件夹 -->
+            <!-- 如果没有图片，会显示下面的文字 -->
+            <a href="#" class="nav-logo-text">
+                <!-- <img src="./images/logo.png" alt="玄五文化"> -->
+                玄五文化
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#home">首页</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#about">企业简介</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#services">服务内容</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#cases">成功案例</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact">联系我们</a></li>
-                </ul>
-            </div>
+        </div>
+        <div class="nav-links">
+            <a href="#services">服务体系</a>
+            <a href="#cases">成功案例</a>
+            <a href="#about">关于我们</a>
+            <a href="#contact">联系合作</a>
         </div>
     </nav>
 
-    <!-- 企业简介 -->
-    <section id="about" class="py-5">
+    <!-- 头部 Hero 区域 -->
+    <section class="hero">
+        <div class="container hero-content">
+            <h1 style="color:white;">共创·共鸣<br>中小企数字GC服务商</h1>
+            <p>2024 甲辰年（龙年）<br>致力于为客户创造卓越的<span class="highlight-mark">品牌价值</span>和<span class="highlight-mark">商业效益</span></p>
+            <a href="#contact" class="btn-primary">立即开启合作</a>
+        </div>
+    </section>
+
+    <!-- 核心服务 (单行排列) -->
+    <section id="services" class="container">
+        <div class="section-header">
+            <h2>核心服务体系</h2>
+            <p>一站式数字化整合解决方案</p>
+        </div>
+        
+        <div class="services-row">
+            <!-- 卡片 1 -->
+            <div class="service-card">
+                <i class="fas fa-bullseye service-icon"></i>
+                <h3>品牌文化策划</h3>
+                <p>从企业<span class="highlight-mark">品牌定位</span>到成长的全方位规划。深入挖掘品牌DNA，打造独特品牌故事，找准市场切入点。</p>
+            </div>
+            <!-- 卡片 2 -->
+            <div class="service-card">
+                <i class="fas fa-mobile-alt service-icon"></i>
+                <h3>品牌数字营销</h3>
+                <p>结合<span class="highlight-mark">SEO/SEM</span>、社媒营销（小红书/抖音）及KOL投放，构建品牌独特且个性的数字营销传播矩阵。</p>
+            </div>
+            <!-- 卡片 3 -->
+            <div class="service-card">
+                <i class="fas fa-users service-icon"></i>
+                <h3>活动文化营销</h3>
+                <p>线上线下联动，涵盖<span class="highlight-mark">公关活动</span>、展览展会及行业盛典，通过精准触达提升用户交互与转化率。</p>
+            </div>
+            <!-- 卡片 4 -->
+            <div class="service-card">
+                <i class="fas fa-vr-cardboard service-icon"></i>
+                <h3>数字文化技术</h3>
+                <p>紧跟<span class="highlight-mark">AIGC</span>未来，应用3D可视化与AI智能交互技术，打造空间与人、情绪与人的沉浸式体验。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 成功案例 (单行排列 + 图片占位) -->
+    <section id="cases" class="cases-section">
         <div class="container">
-            <h2 class="text-center section-title">企业简介</h2>
-            <div class="row align-items-center">
-                <div class="col-lg-8 mx-auto">
-                    <p class="lead text-center">
-                        玄五是一家致力于提供全方位数字文化广告和数字GC内容服务的企业。我们始终秉承创新、专业、共创、共鸣的服务理念，致力于为客户创造卓越的品牌价值和商业效益。
-                    </p>
-                    <div class="row mt-5">
-                        <div class="col-md-4 text-center mb-4">
-                            <div class="h1 text-primary">🎯</div>
-                            <h5>品牌定位</h5>
-                            <p class="text-muted">精准品牌战略规划</p>
+            <div class="section-header">
+                <h2>精选成功案例</h2>
+                <p>用实战成果见证品牌成长</p>
+            </div>
+
+            <div class="cases-row">
+                <!-- 案例 1 -->
+                <div class="case-item">
+                    <div class="case-img-wrapper">
+                        <!-- 【图片链接位置】 src="./images/case1.jpg" -->
+                        <img src="" alt="行业活动" style="display:none;" onload="this.style.display='block'"> 
+                        <div class="placeholder-text">此处放：行业活动现场图</div>
+                    </div>
+                    <div class="case-content">
+                        <h4>行业品牌活动策划</h4>
+                        <p>大湾区数字贸易论坛、工业文化发展大会等高端峰会执行。</p>
+                        <div class="case-tags">
+                            <span>高端峰会</span><span>品牌资产</span>
                         </div>
-                        <div class="col-md-4 text-center mb-4">
-                            <div class="h1 text-primary">🚀</div>
-                            <h5>数字营销</h5>
-                            <p class="text-muted">全渠道数字化整合</p>
+                    </div>
+                </div>
+
+                <!-- 案例 2 -->
+                <div class="case-item">
+                    <div class="case-img-wrapper">
+                         <!-- 【图片链接位置】 -->
+                        <div class="placeholder-text">此处放：直播/发布会图</div>
+                    </div>
+                    <div class="case-content">
+                        <h4>公关活动与直播</h4>
+                        <p>雷克萨斯上市发布会、普华永道空宣（三机位直播）。</p>
+                        <div class="case-tags">
+                            <span>新品发布</span><span>线上直播</span>
                         </div>
-                        <div class="col-md-4 text-center mb-4">
-                            <div class="h1 text-primary">✨</div>
-                            <h5>AIGC创新</h5>
-                            <p class="text-muted">AI智能技术应用</p>
+                    </div>
+                </div>
+
+                <!-- 案例 3 -->
+                <div class="case-item">
+                    <div class="case-img-wrapper">
+                         <!-- 【图片链接位置】 -->
+                        <div class="placeholder-text">此处放：小红书/海报图</div>
+                    </div>
+                    <div class="case-content">
+                        <h4>数字营销传播</h4>
+                        <p>哈士奇冰箱618种草、A21衣疗诊所H5、小红书KOL投放。</p>
+                        <div class="case-tags">
+                            <span>爆款种草</span><span>社媒营销</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 案例 4 -->
+                <div class="case-item">
+                    <div class="case-img-wrapper">
+                         <!-- 【图片链接位置】 -->
+                        <div class="placeholder-text">此处放：IP公仔/现场图</div>
+                    </div>
+                    <div class="case-content">
+                        <h4>文旅与IP联名</h4>
+                        <p>商区IP主题季、城市运动赛事、农文旅研学活动策划。</p>
+                        <div class="case-tags">
+                            <span>城市IP</span><span>线下引流</span>
                         </div>
                     </div>
                 </div>
@@ -94,174 +531,85 @@
         </div>
     </section>
 
-    <!-- 服务内容 -->
-    <section id="services" class="py-5 bg-light">
-        <div class="container">
-            <h2 class="text-center section-title">服务内容</h2>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="card service-card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">1. 品牌文化策划</h5>
-                            <p class="card-text">从企业品牌定位到品牌成长的全方位规划，创新品牌内核，打造品牌DNA。</p>
-                        </div>
-                    </div>
+    <!-- 联系我们 (模仿参考网站风格) -->
+    <section id="contact" class="contact-section container">
+        <div class="contact-grid">
+            <div class="contact-left">
+                <h2>让年轻常在<br>让企业不被潮流淘汰</h2>
+                <p style="color: #666; max-width: 400px;">
+                    我们始终坚持客户至上，以客户需求为导向。期待与您共创、共鸣，思想无限大，成长的边界不止步！
+                </p>
+            </div>
+            
+            <div class="contact-info-box">
+                <div class="info-item">
+                    <h5>PROJECT CONTACT</h5>
+                    <p>熊猫 Panda <span class="copy-btn" onclick="copyText('13926056601')">复制</span></p>
                 </div>
-                <div class="col-md-4">
-                    <div class="card service-card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">2. 品牌数字营销</h5>
-                            <p class="card-text">个性化创意策划，数字化营销提升品牌形象，抢占消费者心智。</p>
-                        </div>
-                    </div>
+                <div class="info-item">
+                    <h5>MOBILE PHONE</h5>
+                    <p>139-2605-6601</p>
                 </div>
-                <div class="col-md-4">
-                    <div class="card service-card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">3. 活动文化营销</h5>
-                            <p class="card-text">精准投放，活动提升交互转化率，打造沉浸式品牌体验。</p>
-                        </div>
-                    </div>
+                <div class="info-item">
+                    <h5>WECHAT</h5>
+                    <p>funnypanda88</p>
                 </div>
-                <div class="col-md-4">
-                    <div class="card service-card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">4. 数字文化内容</h5>
-                            <p class="card-text">新媒体内容创作，打造互联网营销力，构建品牌内容生态。</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card service-card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">5. 数字文化技术</h5>
-                            <p class="card-text">3D可视化、AI技术应用，提升人、空间、情绪交互体验。</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card service-card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">数字化媒介矩阵</h5>
-                            <p class="card-text">网媒/纸媒/双微/抖音/小红书/KOL资源整合投放。</p>
-                        </div>
-                    </div>
+                <div class="info-item">
+                    <h5>ADDRESS</h5>
+                    <p>广州市黄埔区科珠路232号</p>
                 </div>
             </div>
         </div>
     </section>
-
-    <!-- 成功案例 -->
-    <section id="cases" class="py-5">
-        <div class="container">
-            <h2 class="text-center section-title">成功案例</h2>
-            <div class="row g-4">
-                <div class="col-md-6 col-lg-4">
-                    <div class="card">
-                        <img src="https://via.placeholder.com/400x250/007bff/ffffff?text=品牌公关活动" class="card-img-top" alt="案例">
-                        <div class="card-body">
-                            <h5 class="card-title">品牌公关活动策划</h5>
-                            <p class="card-text text-muted">行业品牌活动、联欢活动、直播活动等全方位策划执行。</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="card">
-                        <img src="https://via.placeholder.com/400x250/28a745/ffffff?text=数字营销" class="card-img-top" alt="案例">
-                        <div class="card-body">
-                            <h5 class="card-title">数字化营销传播</h5>
-                            <p class="card-text text-muted">Fun游乡村、哈士奇复古冰箱等数字营销案例。</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="card">
-                        <img src="https://via.placeholder.com/400x250/ffc107/000000?text=数字技术" class="card-img-top" alt="案例">
-                        <div class="card-body">
-                            <h5 class="card-title">数字文化技术应用</h5>
-                            <p class="card-text text-muted">3D可视化、数字展览、AI技术融合创新方案。</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 联系我们 -->
-    <section id="contact" class="py-5 bg-dark text-white">
-        <div class="container">
-            <h2 class="text-center section-title">欢迎合作</h2>
-            <div class="row">
-                <div class="col-lg-8 mx-auto text-center">
-                    <h4 class="mb-4">共创、共鸣，思想无限大，成长的边界不止步！</h4>
-                    <p class="mb-4">我们致力于为各级政府、上市企业、地产行业、文化旅游、展览展会等行业客户提供一站式数字化整合解决方案。</p>
-                    <div class="d-flex flex-wrap justify-content-center gap-3">
-                        <a href="mailto:contact@xuan5.com" class="btn btn-outline-light">contact@xuan5.com</a>
-                        <a href="tel:400-000-0000" class="btn btn-outline-light">400-000-0000</a>
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#contactModal">获取方案</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 联系表单模态框 -->
-    <div class="modal fade" id="contactModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">获取定制方案</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label class="form-label">企业名称</label>
-                            <input type="text" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">联系人</label>
-                            <input type="text" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">联系电话</label>
-                            <input type="tel" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">需求描述</label>
-                            <textarea class="form-control" rows="3"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">提交需求</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- 页脚 -->
-    <footer class="py-4 bg-black text-white-50 text-center">
+    <footer>
         <div class="container">
-            <p class="mb-0">© 2024 玄五文化数字科技 Xuan5 Culture. All Rights Reserved.</p>
-            <p class="small">中小企数字GC服务商</p>
+            <div class="footer-content">
+                <div class="footer-logo">玄五文化</div>
+                <div class="footer-menu">
+                    <!-- 这里可以放二维码图片占位 -->
+                </div>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+                <p>© 2024 Xuan5 Culture. All Rights Reserved.</p>
+                <p class="update-time">最后更新：<span id="currentDate"></span></p>
+            </div>
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // 平滑滚动
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                if(targetId === '#') return;
-                const targetElement = document.querySelector(targetId);
-                if(targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
+        // 1. 获取当前日期
+        const dateElement = document.getElementById('currentDate');
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        dateElement.textContent = `${year}-${month}-${day}`;
+
+        // 2. 简单的复制功能
+        function copyText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('已复制：' + text);
+            });
+        }
+
+        // 3. 滚动显现动画 (Intersection Observer)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
                 }
             });
+        });
+
+        // 给卡片添加初始状态
+        document.querySelectorAll('.service-card, .case-item').forEach((el, index) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = `all 0.6s ease ${index * 0.1}s`; // 阶梯延迟
+            observer.observe(el);
         });
     </script>
 </body>
