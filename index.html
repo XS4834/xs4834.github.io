@@ -11,9 +11,9 @@
             /* 品牌色体系 */
             --brand-red: #D32F2F; 
             --brand-dark: #8B0000;
-            --brand-gold: #FFD700; /* 香槟金，用于强调 */
+            --brand-gold: #FFD700; /* 香槟金 */
             
-            --text-main: #111111; /* 纯黑，更精神 */
+            --text-main: #111111;
             --text-sub: #555555;
             --bg-body: #FFFFFF;
             
@@ -40,13 +40,13 @@
             padding: 0 40px;
         }
 
-        /* ================= 导航栏 (透明悬浮) ================= */
+        /* ================= 导航栏 ================= */
         .navbar {
-            height: 80px;
+            height: 90px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            position: fixed; /* 悬浮在顶部 */
+            position: fixed;
             top: 0;
             width: 100%;
             background: rgba(255, 255, 255, 0.95);
@@ -56,14 +56,23 @@
             padding: 0 40px;
         }
 
-        .nav-logo-text {
-            font-size: 26px;
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-img {
+            height: 50px;
+            width: auto;
+            display: block;
+        }
+
+        .logo-text {
+            font-size: 24px;
             font-weight: 900;
             color: var(--brand-red);
             letter-spacing: 2px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
 
         .nav-links { display: flex; gap: 40px; }
@@ -83,9 +92,9 @@
         }
         .nav-links a:hover::after { width: 100%; }
 
-        /* ================= 自动轮播 Hero 区域 ================= */
+        /* ================= 轮播 Hero 区域 (升级版) ================= */
         .hero-slider {
-            height: 90vh; /* 占据大半个屏幕 */
+            height: 90vh;
             position: relative;
             overflow: hidden;
             background: #000;
@@ -103,15 +112,13 @@
             justify-content: center;
             text-align: center;
         }
-
         .slide.active { opacity: 1; }
-
-        /* 遮罩层，让文字更清晰 */
+        /* 遮罩加深一点，保证文字清晰 */
         .slide::before {
             content: '';
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(139,0,0,0.8) 0%, rgba(0,0,0,0.6) 100%);
+            background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 100%);
             z-index: 1;
         }
 
@@ -119,35 +126,32 @@
             position: relative;
             z-index: 2;
             color: white;
-            max-width: 1000px;
+            max-width: 1100px;
             padding: 0 20px;
         }
-
-        /* 标题文字优化 */
         .hero-title {
-            font-size: 60px;
+            font-size: 56px;
             font-weight: 800;
             line-height: 1.2;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             letter-spacing: 2px;
-            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
-        
-        .hero-highlight {
-            color: var(--brand-gold);
-            font-style: italic;
-            padding: 0 10px;
+        .hero-highlight { color: var(--brand-gold); font-style: italic; padding: 0 10px; }
+        .hero-subtitle { 
+            font-size: 22px; 
+            font-weight: 300; 
+            margin-bottom: 40px; 
+            opacity: 0.95;
+            letter-spacing: 1px;
+            background: rgba(0,0,0,0.3);
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 4px;
+            backdrop-filter: blur(5px);
         }
-
-        .hero-subtitle {
-            font-size: 24px;
-            font-weight: 300;
-            margin-bottom: 50px;
-            opacity: 0.9;
-        }
-
         .btn-hero {
-            padding: 18px 50px;
+            padding: 16px 45px;
             background: var(--brand-red);
             color: white;
             border-radius: 50px;
@@ -156,244 +160,115 @@
             border: 2px solid var(--brand-red);
             transition: var(--transition);
             box-shadow: 0 10px 20px rgba(211, 47, 47, 0.4);
+            display: inline-block;
         }
-        .btn-hero:hover {
-            background: transparent;
-            color: white;
+        .btn-hero:hover { background: transparent; color: white; }
+        
+        /* 轮播指示点 */
+        .slider-dots {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            display: flex;
+            gap: 10px;
+        }
+        .dot {
+            width: 12px;
+            height: 12px;
+            background: rgba(255,255,255,0.4);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .dot.active {
+            background: var(--brand-red);
+            transform: scale(1.2);
         }
 
-        /* ================= 数据轰炸栏 (IMPACT SECTION) ================= */
+        /* ================= 数据轰炸栏 ================= */
         .stats-section {
-            background: var(--brand-red); /* 主题红底 */
+            background: var(--brand-red);
             color: white;
             padding: 60px 0;
             position: relative;
-            margin-top: -5px; /* 消除缝隙 */
+            margin-top: -5px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             z-index: 10;
         }
-
-        .stats-grid {
-            display: flex;
-            justify-content: space-between;
-            text-align: center;
-        }
-
-        .stat-item {
-            flex: 1;
-            border-right: 1px solid rgba(255,255,255,0.2);
-        }
+        .stats-grid { display: flex; justify-content: space-between; text-align: center; }
+        .stat-item { flex: 1; border-right: 1px solid rgba(255,255,255,0.2); }
         .stat-item:last-child { border-right: none; }
-
         .stat-number {
-            font-size: 56px;
-            font-weight: 900;
-            line-height: 1;
-            margin-bottom: 10px;
-            font-family: 'Impact', 'Arial Black', sans-serif; /* 硬朗字体 */
-            color: var(--brand-gold); /* 金色数字 */
+            font-size: 56px; font-weight: 900; line-height: 1; margin-bottom: 10px;
+            font-family: 'Impact', 'Arial Black', sans-serif; color: var(--brand-gold);
         }
-        
-        .stat-label {
-            font-size: 16px;
-            font-weight: 500;
-            letter-spacing: 1px;
-            opacity: 0.9;
-        }
+        .stat-label { font-size: 16px; font-weight: 500; letter-spacing: 1px; opacity: 0.9; }
 
-        /* ================= 通用标题 (美化) ================= */
-        .section-header {
-            text-align: center;
-            margin: 100px 0 60px;
-        }
+        /* ================= 通用标题 ================= */
+        .section-header { text-align: center; margin: 100px 0 60px; }
         .section-header h2 {
-            font-size: 42px;
-            font-weight: 800;
-            margin-bottom: 15px;
-            color: var(--brand-dark);
-            position: relative;
-            display: inline-block;
+            font-size: 42px; font-weight: 800; margin-bottom: 15px; color: var(--brand-dark);
+            position: relative; display: inline-block;
         }
         .section-header h2::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 5px;
-            background: var(--brand-red);
-            margin: 15px auto 0;
+            content: ''; display: block; width: 60px; height: 5px;
+            background: var(--brand-red); margin: 15px auto 0;
         }
-        .section-header p {
-            font-size: 18px;
-            color: var(--text-sub);
-        }
+        .section-header p { font-size: 18px; color: var(--text-sub); }
 
-        /* ================= 核心服务 (一行排布) ================= */
+        /* ================= 核心服务 (一行 5 列) ================= */
         .services-row {
             display: flex;
-            gap: 30px;
+            gap: 20px;
             justify-content: center;
         }
-
         .service-card {
-            flex: 1;
-            background: white;
-            padding: 50px 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            transition: var(--transition);
-            text-align: center;
-            border: 1px solid #f0f0f0;
-            position: relative;
-            overflow: hidden;
+            flex: 1; background: white; padding: 40px 20px; border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: var(--transition);
+            text-align: center; border: 1px solid #f0f0f0; position: relative; overflow: hidden;
         }
-
         .service-card:hover {
-            transform: translateY(-15px);
-            box-shadow: 0 20px 40px rgba(211, 47, 47, 0.15);
-            border-color: var(--brand-red);
+            transform: translateY(-15px); box-shadow: 0 20px 40px rgba(211, 47, 47, 0.15); border-color: var(--brand-red);
         }
+        .service-icon { font-size: 40px; color: var(--brand-red); margin-bottom: 20px; }
+        .service-card h3 { font-size: 20px; margin-bottom: 15px; font-weight: 700; }
+        .service-card p { font-size: 14px; color: #666; line-height: 1.8; text-align: left; }
+        .hl { color: var(--brand-red); font-weight: bold; background: rgba(211, 47, 47, 0.05); padding: 0 3px; }
 
-        .service-icon {
-            font-size: 48px;
-            color: var(--brand-red);
-            margin-bottom: 25px;
-        }
-
-        .service-card h3 {
-            font-size: 22px;
-            margin-bottom: 20px;
-            font-weight: 700;
-        }
-
-        .service-card p {
-            font-size: 15px;
-            color: #666;
-            line-height: 1.8;
-            text-align: left;
-        }
-
-        /* 高亮文字 */
-        .hl {
-            color: var(--brand-red);
-            font-weight: bold;
-            background: rgba(211, 47, 47, 0.05);
-            padding: 2px 5px;
-        }
-
-        /* ================= 成功案例 (一行排布) ================= */
-        .cases-section {
-            background: #FAFAFA;
-            padding: 20px 0 100px;
-            margin-top: 80px;
-        }
-
-        .cases-row {
-            display: flex;
-            gap: 25px;
-        }
-
+        /* ================= 成功案例 ================= */
+        .cases-section { background: #FAFAFA; padding: 20px 0 100px; margin-top: 80px; }
+        .cases-row { display: flex; gap: 25px; }
         .case-item {
-            flex: 1;
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            transition: var(--transition);
-            cursor: pointer;
+            flex: 1; background: white; border-radius: 15px; overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: var(--transition); cursor: pointer;
         }
-
-        .case-item:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-        }
-
-        .case-img {
-            height: 240px;
-            background-color: #eee;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        /* 图片占位符 */
-        .case-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.6s;
-        }
+        .case-item:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+        .case-img { height: 240px; background-color: #eee; position: relative; overflow: hidden; }
+        .case-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
         .case-item:hover .case-img img { transform: scale(1.1); }
-
         .case-content { padding: 30px; }
         .case-content h4 { font-size: 20px; margin-bottom: 10px; font-weight: 700; }
         .case-content p { font-size: 14px; color: #666; margin-bottom: 15px; }
-        .case-tag {
-            font-size: 12px;
-            color: white;
-            background: var(--brand-red);
-            padding: 4px 10px;
-            border-radius: 4px;
-            display: inline-block;
-        }
+        .case-tag { font-size: 12px; color: white; background: var(--brand-red); padding: 4px 10px; border-radius: 4px; }
 
-        /* ================= 页脚 (社交图标) ================= */
-        footer {
-            background: #1a1a1a;
-            color: white;
-            padding: 80px 0 30px;
-            margin-top: 80px;
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 50px;
-            padding-bottom: 50px;
-            border-bottom: 1px solid #333;
-        }
-
+        /* ================= 页脚 & 社交图标 ================= */
+        footer { background: #1a1a1a; color: white; padding: 80px 0 30px; margin-top: 80px; }
+        .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; padding-bottom: 50px; border-bottom: 1px solid #333; }
         .footer-brand h2 { font-size: 30px; margin-bottom: 15px; }
         .footer-brand p { color: #888; max-width: 400px; }
-
-        /* 社交图标样式 */
-        .social-icons {
-            display: flex;
-            gap: 20px;
-            margin-top: 30px;
-        }
+        .social-icons { display: flex; gap: 20px; margin-top: 30px; }
         .social-icon {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            transition: 0.3s;
-            color: white;
+            width: 45px; height: 45px; border-radius: 50%; background: rgba(255,255,255,0.1);
+            display: flex; align-items: center; justify-content: center; font-size: 20px;
+            transition: 0.3s; color: white;
         }
-        .social-icon:hover {
-            background: var(--brand-red);
-            transform: scale(1.1);
-        }
-        
-        /* 抖音/小红书图标模拟 (FontAwesome无标准图标时) */
-        .fa-tiktok { font-size: 20px; } /* 抖音 */
-
-        .footer-info {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-        }
+        .social-icon:hover { background: var(--brand-red); transform: scale(1.1); }
+        .footer-info { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
         .footer-info h4 { color: #888; font-size: 14px; margin-bottom: 10px; }
         .footer-info p { font-size: 18px; font-weight: bold; }
-
-        .copyright {
-            text-align: center;
-            padding-top: 30px;
-            color: #555;
-            font-size: 14px;
-        }
+        .copyright { text-align: center; padding-top: 30px; color: #555; font-size: 14px; }
 
         /* 响应式 */
         @media (max-width: 1024px) {
@@ -402,10 +277,9 @@
             .services-row, .cases-row { flex-wrap: wrap; }
             .service-card, .case-item { flex: 0 0 48%; }
             .hero-title { font-size: 40px; }
-            .stat-number { font-size: 40px; }
         }
         @media (max-width: 768px) {
-            .navbar { display: none; } /* 简化 */
+            .navbar { display: none; }
             .stat-item { flex: 0 0 100%; }
             .service-card, .case-item { flex: 0 0 100%; }
             .footer-grid { grid-template-columns: 1fr; }
@@ -416,10 +290,14 @@
 
     <!-- 导航栏 -->
     <nav class="navbar">
-        <div class="nav-logo-text">
-            <i class="fas fa-cube"></i> <!-- 用个图标代替Logo，有图后删除 -->
-            玄五文化
+        <div class="logo-container">
+            <!-- ⬇️ Logo 图片接口 -->
+            <!-- <img src="./images/logo.png" alt="玄五文化" class="logo-img"> -->
+            <div class="logo-text">
+                <i class="fas fa-cube"></i> 玄五文化
+            </div>
         </div>
+
         <div class="nav-links">
             <a href="#">首页</a>
             <a href="#services">核心业务</a>
@@ -429,10 +307,9 @@
         </div>
     </nav>
 
-    <!-- 全屏轮播 Hero 区域 -->
+    <!-- 全屏轮播 Hero 区域 (6张) -->
     <div class="hero-slider">
-        <!-- 幻灯片 1 -->
-        <!-- 注意：这里用 background-image 占位，您可以换成 images/slide1.jpg -->
+        <!-- 幻灯片 1：总愿景 -->
         <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=2574&auto=format&fit=crop');">
             <div class="hero-content">
                 <h1 class="hero-title">为客户创造卓越的<br><span class="hero-highlight">品牌价值</span> 与 <span class="hero-highlight">商业效益</span></h1>
@@ -441,17 +318,63 @@
             </div>
         </div>
         
-        <!-- 幻灯片 2 (代码预留，图片替换即可) -->
+        <!-- 幻灯片 2：品牌策划 -->
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2670&auto=format&fit=crop');">
+            <div class="hero-content">
+                <h1 class="hero-title">品牌文化策划<br><span class="hero-highlight">Brand Planning</span></h1>
+                <p class="hero-subtitle">深入挖掘品牌DNA，打造独具个性的品牌故事</p>
+                <a href="#services" class="btn-hero">了解详情</a>
+            </div>
+        </div>
+
+        <!-- 幻灯片 3：数字营销 -->
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop');">
+            <div class="hero-content">
+                <h1 class="hero-title">品牌数字营销<br><span class="hero-highlight">Digital Marketing</span></h1>
+                <p class="hero-subtitle">构建全域流量矩阵，实现“品效合一”的商业变现</p>
+                <a href="#services" class="btn-hero">查看案例</a>
+            </div>
+        </div>
+
+        <!-- 幻灯片 4：活动营销 -->
         <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=2670&auto=format&fit=crop');">
             <div class="hero-content">
-                <h1 class="hero-title">一站式数字化<br><span class="hero-highlight">整合解决方案</span></h1>
-                <p class="hero-subtitle">让年轻常在，让企业不被潮流淘汰</p>
-                <a href="#contact" class="btn-hero">查看案例</a>
+                <h1 class="hero-title">活动文化营销<br><span class="hero-highlight">Event Marketing</span></h1>
+                <p class="hero-subtitle">线上线下联动，创造沉浸式交互体验，提升用户转化</p>
+                <a href="#cases" class="btn-hero">精彩回顾</a>
             </div>
+        </div>
+
+        <!-- 幻灯片 5：数字技术 -->
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=2565&auto=format&fit=crop');">
+            <div class="hero-content">
+                <h1 class="hero-title">数字文化技术<br><span class="hero-highlight">Digital Tech & AIGC</span></h1>
+                <p class="hero-subtitle">虚拟人 & 3D可视化，打破时空限制的情绪交互</p>
+                <a href="#services" class="btn-hero">技术展示</a>
+            </div>
+        </div>
+
+        <!-- 幻灯片 6：GEO服务 -->
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2672&auto=format&fit=crop');">
+            <div class="hero-content">
+                <h1 class="hero-title">GEO 智能搜推服务<br><span class="hero-highlight">Generative Engine Optimization</span></h1>
+                <p class="hero-subtitle">基于多维矩阵审计，抢占生成式搜索流量高地</p>
+                <a href="#services" class="btn-hero">布局未来</a>
+            </div>
+        </div>
+
+        <!-- 指示点 -->
+        <div class="slider-dots">
+            <div class="dot active" onclick="goToSlide(0)"></div>
+            <div class="dot" onclick="goToSlide(1)"></div>
+            <div class="dot" onclick="goToSlide(2)"></div>
+            <div class="dot" onclick="goToSlide(3)"></div>
+            <div class="dot" onclick="goToSlide(4)"></div>
+            <div class="dot" onclick="goToSlide(5)"></div>
         </div>
     </div>
 
-    <!-- 数据轰炸栏 (IMPACT SECTION) -->
+    <!-- 数据轰炸栏 -->
     <div class="stats-section">
         <div class="container">
             <div class="stats-grid">
@@ -499,12 +422,17 @@
             <div class="service-card">
                 <i class="fas fa-users-cog service-icon"></i>
                 <h3>活动文化营销</h3>
-                <p>涵盖<span class="hl">行业发布会、公关活动、沉浸式展览</span>。线上线下联动，精准触达用户，提升交互体验与转化率。</p>
+                <p>涵盖<span class="hl">行业发布会、公关活动</span>。线上线下联动，精准触达用户，提升交互体验与转化率。</p>
             </div>
             <div class="service-card">
                 <i class="fas fa-vr-cardboard service-icon"></i>
                 <h3>数字文化技术</h3>
                 <p>紧跟<span class="hl">AIGC与3D可视化</span>技术，开发虚拟人及数字展厅。打破时空限制，创造情绪与人的深度交互。</p>
+            </div>
+            <div class="service-card">
+                <i class="fas fa-robot service-icon"></i>
+                <h3>GEO 服务</h3>
+                <p>基于<span class="hl">多维矩阵审计系统</span>，提升品牌在各大AI模型的推荐权重。重塑智能形象，助您占领<span class="hl">生成式搜索</span>流量高地。</p>
             </div>
         </div>
     </section>
@@ -517,10 +445,8 @@
                 <p>用实战数据见证品牌影响力</p>
             </div>
             <div class="cases-row">
-                <!-- 案例 1 -->
                 <div class="case-item">
                     <div class="case-img">
-                        <!-- 请将 src 替换为您的图片: ./images/case1.jpg -->
                         <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2670&auto=format&fit=crop" alt="行业活动">
                     </div>
                     <div class="case-content">
@@ -529,7 +455,6 @@
                         <span class="case-tag">高端峰会</span>
                     </div>
                 </div>
-                <!-- 案例 2 -->
                 <div class="case-item">
                     <div class="case-img">
                          <img src="https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?q=80&w=2670&auto=format&fit=crop" alt="直播活动">
@@ -540,7 +465,6 @@
                         <span class="case-tag">新品发布</span>
                     </div>
                 </div>
-                <!-- 案例 3 -->
                 <div class="case-item">
                     <div class="case-img">
                          <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=2574&auto=format&fit=crop" alt="数字营销">
@@ -551,7 +475,6 @@
                         <span class="case-tag">社媒种草</span>
                     </div>
                 </div>
-                <!-- 案例 4 -->
                 <div class="case-item">
                     <div class="case-img">
                          <img src="https://images.unsplash.com/photo-1533174072545-e8d4aa97edf9?q=80&w=2574&auto=format&fit=crop" alt="文旅IP">
@@ -573,11 +496,13 @@
                 <div class="footer-brand">
                     <h2>玄五文化 Xuan5 Culture</h2>
                     <p>中小企数字GC服务商 · 致力于将数字技术与文化创意完美结合，打造独具特色的品牌传播方案。</p>
+                    
+                    <!-- ⬇️ 社交媒体链接口 ⬇️ -->
                     <div class="social-icons">
                         <a href="#" class="social-icon" title="微信"><i class="fab fa-weixin"></i></a>
                         <a href="#" class="social-icon" title="微博"><i class="fab fa-weibo"></i></a>
-                        <a href="#" class="social-icon" title="抖音"><i class="fab fa-tiktok"></i></a> <!-- FontAwesome 6+ 支持Tiktok图标 -->
-                        <a href="#" class="social-icon" title="小红书"><i class="fas fa-book-open"></i></a> <!-- 暂用书本图标代替小红书 -->
+                        <a href="#" class="social-icon" title="抖音"><i class="fab fa-tiktok"></i></a>
+                        <a href="#" class="social-icon" title="小红书"><i class="fas fa-book-open"></i></a>
                     </div>
                 </div>
                 <div class="footer-info">
@@ -606,24 +531,39 @@
     </footer>
 
     <script>
-        // 1. 自动轮播脚本
+        // 自动轮播脚本
         const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
         let currentSlide = 0;
         
-        function nextSlide() {
-            slides[currentSlide].classList.remove('active');
-            currentSlide = (currentSlide + 1) % slides.length;
+        function updateSlide() {
+            slides.forEach(s => s.classList.remove('active'));
+            dots.forEach(d => d.classList.remove('active'));
+            
             slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
         }
-        // 每 5 秒切换一次
-        setInterval(nextSlide, 5000);
 
-        // 2. 更新日期
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            updateSlide();
+        }
+        
+        // 点击指示点跳转
+        function goToSlide(index) {
+            currentSlide = index;
+            updateSlide();
+        }
+
+        // 自动播放间隔 5000ms
+        let slideInterval = setInterval(nextSlide, 5000);
+
+        // 更新日期
         const dateEl = document.getElementById('date');
         const now = new Date();
         dateEl.innerText = `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日`;
 
-        // 3. 简单的滚动动画
+        // 滚动动画
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if(entry.isIntersecting) {
@@ -632,7 +572,6 @@
                 }
             });
         });
-
         document.querySelectorAll('.service-card, .case-item, .stat-item').forEach((el, index) => {
             el.style.opacity = 0;
             el.style.transform = 'translateY(20px)';
